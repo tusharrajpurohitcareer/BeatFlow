@@ -1,3 +1,4 @@
+
 const mongoose = require("mongoose");
 const { MongoMemoryServer } = require("mongodb-memory-server");
 const jwt = require("jsonwebtoken");
@@ -6,22 +7,32 @@ const { User } = require("../models");
 let mongoServer;
 
 beforeAll(async () => {
-  mongoServer = await MongoMemoryServer.create();
-  const uri = mongoServer.getUri();
+  mongoServer = await MongoMemoryServer.create({
+    binary: {
+      version: "7.0.14"
+    }
+  });
 
+  const uri = mongoServer.getUri();
   await mongoose.connect(uri);
-});
+}, 300000);
 
 afterEach(async () => {
   const collections = mongoose.connection.collections;
-  for (let key in collections) {
+
+  for (const key of Object.keys(collections)) {
     await collections[key].deleteMany();
   }
 });
 
 afterAll(async () => {
-  await mongoose.connection.close();
-  await mongoServer.stop();
+  if (mongoose.connection.readyState !== 0) {
+    await mongoose.connection.close();
+  }
+
+  if (mongoServer) {
+    await mongoServer.stop();
+  }
 });
 
 const createTestUser = async () => {
@@ -34,9 +45,11 @@ const createTestUser = async () => {
 };
 
 const generateTestToken = (userId) => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-    expiresIn: "1h"
-  });
+  return jwt.sign(
+    { id: userId },
+    process.env.JWT_SECRET,
+    { expiresIn: "1h" }
+  );
 };
 
 module.exports = {
