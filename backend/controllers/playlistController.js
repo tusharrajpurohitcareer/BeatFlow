@@ -1,13 +1,5 @@
-/* ==========================================
-   MYTUNE PLAYLIST CONTROLLER
-========================================== */
-
 const mongoose = require("mongoose");
 const { Playlist, Song } = require("../models");
-
-/* ==========================================
-   HELPER: CHECK EDIT PERMISSION
-========================================== */
 
 const canEditPlaylist = (playlist, userId) => {
   if (playlist.owner.equals(userId)) return true;
@@ -21,10 +13,6 @@ const canEditPlaylist = (playlist, userId) => {
 
   return false;
 };
-
-/* ==========================================
-   1️⃣ CREATE PLAYLIST
-========================================== */
 
 exports.createPlaylist = async (req, res, next) => {
   try {
@@ -49,11 +37,6 @@ exports.createPlaylist = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   2️⃣ GET USER PLAYLISTS
-========================================== */
-
 exports.getPlaylists = async (req, res, next) => {
   try {
     const playlists = await Playlist.find({
@@ -73,11 +56,6 @@ exports.getPlaylists = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   3️⃣ GET PLAYLIST BY ID
-========================================== */
-
 exports.getPlaylistById = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -90,7 +68,6 @@ exports.getPlaylistById = async (req, res, next) => {
       return res.status(404).json({ success: false, message: "Playlist not found" });
     }
 
-    // Privacy check
     if (playlist.privacy === "private" && !playlist.owner.equals(req.user?._id)) {
       return res.status(403).json({ success: false, message: "Access denied" });
     }
@@ -104,11 +81,6 @@ exports.getPlaylistById = async (req, res, next) => {
     next(error);
   }
 };
-
-
-/* ==========================================
-   4️⃣ UPDATE PLAYLIST
-========================================== */
 
 exports.updatePlaylist = async (req, res, next) => {
   try {
@@ -144,11 +116,6 @@ exports.updatePlaylist = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   5️⃣ DELETE PLAYLIST
-========================================== */
-
 exports.deletePlaylist = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -174,11 +141,6 @@ exports.deletePlaylist = async (req, res, next) => {
     next(error);
   }
 };
-
-
-/* ==========================================
-   6️⃣ ADD SONGS
-========================================== */
 
 exports.addSongsToPlaylist = async (req, res, next) => {
   try {
@@ -217,11 +179,6 @@ exports.addSongsToPlaylist = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   7️⃣ REMOVE SONG
-========================================== */
-
 exports.removeSongFromPlaylist = async (req, res, next) => {
   try {
     const { id, songId } = req.params;
@@ -238,7 +195,6 @@ exports.removeSongFromPlaylist = async (req, res, next) => {
 
     playlist.songs = playlist.songs.filter(song => !song.songId.equals(songId));
 
-    // Reorder
     playlist.songs.forEach((song, index) => {
       song.order = index;
     });
@@ -255,15 +211,10 @@ exports.removeSongFromPlaylist = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   8️⃣ REORDER PLAYLIST
-========================================== */
-
 exports.reorderPlaylist = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { newOrder } = req.body; // array of songIds in new order
+    const { newOrder } = req.body; 
 
     const playlist = await Playlist.findById(id);
 
@@ -290,11 +241,6 @@ exports.reorderPlaylist = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   9️⃣ COPY PLAYLIST
-========================================== */
-
 exports.copyPlaylist = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -305,7 +251,6 @@ exports.copyPlaylist = async (req, res, next) => {
       return res.status(404).json({ success: false, message: "Playlist not found" });
     }
 
-    // Privacy check
     if (original.privacy === "private" && !original.owner.equals(req.user._id)) {
       return res.status(403).json({ success: false, message: "Access denied" });
     }

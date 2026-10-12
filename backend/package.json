@@ -1,7 +1,7 @@
 {
-  "name": "mytune-backend",
+  "name": "beatflow-backend",
   "version": "1.0.0",
-  "description": "MyTune Music Streaming Backend",
+  "description": "BeatFlow Music Streaming Backend",
   "main": "server.js",
   "scripts": {
     "seed": "node scripts/seedDatabase.js",

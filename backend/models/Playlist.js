@@ -96,17 +96,9 @@ const playlistSchema = new mongoose.Schema(
   }
 );
 
-/* ==========================================
-   INDEXES
-========================================== */
-
 playlistSchema.index({ owner: 1 });
 playlistSchema.index({ privacy: 1 });
 playlistSchema.index({ tags: 1 });
-
-/* ==========================================
-   METHODS
-========================================== */
 
 playlistSchema.methods.addSong = function (songId, userId) {
   this.songs.push({

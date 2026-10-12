@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Playlist – MyTune</title>
+  <title>Playlist – BeatFlow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
-    /* Standalone playlist page reuses app-shell but without sidebar full nav */
     .pl-back-btn {
       display: inline-flex;
       align-items: center;
@@ -21,15 +20,14 @@
       transition: color 0.2s;
     }
     .pl-back-btn:hover { color: var(--text-base); }
-  </style>
+</style>
 </head>
 <body>
 
 <div class="app-shell" id="appShell" style="grid-template-columns: 240px 1fr;">
 
-  <!-- ===== SIDEBAR ===== -->
   <nav class="sidebar">
-    <div class="sidebar-logo" style="cursor:pointer;" onclick="window.location.href='dashboard.html'">🎵 MyTune</div>
+    <div class="sidebar-logo" style="cursor:pointer;" onclick="window.location.href='dashboard.html'">🎵 BeatFlow</div>
 
     <ul class="sidebar-nav">
       <li class="nav-item" onclick="window.location.href='dashboard.html'">
@@ -47,10 +45,8 @@
     </div>
   </nav>
 
-  <!-- ===== MAIN ===== -->
   <div class="main-content">
 
-    <!-- Top bar -->
     <div class="top-bar">
       <div class="nav-arrows">
         <button onclick="history.back()"><i class="fa fa-chevron-left"></i></button>
@@ -70,15 +66,12 @@
       </div>
     </div>
 
-    <!-- Page body -->
     <div class="page active" id="playlistPage">
 
-      <!-- Loading state -->
       <div id="loadingState" style="padding:60px 24px;">
         <div class="spinner"></div>
       </div>
 
-      <!-- Playlist hero (hidden until loaded) -->
       <div id="playlistContent" class="hidden">
 
         <div class="playlist-hero" id="playlistHero">
@@ -90,7 +83,6 @@
           </div>
         </div>
 
-        <!-- Actions -->
         <div class="playlist-actions">
           <button class="play-big-btn" id="playAllBtn"><i class="fa fa-play"></i></button>
           <button class="ctrl-btn" id="shuffleBtn" title="Shuffle"><i class="fa fa-random"></i></button>
@@ -98,7 +90,6 @@
           <button class="ctrl-btn" id="deleteBtn" title="Delete" style="color:#e53e3e;"><i class="fa fa-trash"></i></button>
         </div>
 
-        <!-- Song list -->
         <div style="padding: 0 24px 80px;">
           <table class="song-list" id="songTable">
             <thead>
@@ -120,13 +111,12 @@
           </div>
         </div>
 
-      </div><!-- end playlistContent -->
+      </div>
 
     </div>
 
-  </div><!-- end main-content -->
+  </div>
 
-  <!-- ===== PLAYER BAR ===== -->
   <footer class="player-bar">
     <div class="player-now-playing">
       <img class="player-cover" id="currentCover"
@@ -162,27 +152,23 @@
     </div>
   </footer>
 
-</div><!-- end app-shell -->
+</div>
 
 <div id="toast-container"></div>
 
-<!-- Scripts -->
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script src="js/api.js"></script>
 <script src="js/player.js"></script>
 <script>
-/* ---- Playlist page logic ---- */
 document.addEventListener("DOMContentLoaded", async () => {
 
   if (!API.getToken()) { window.location.href = "index.html"; return; }
 
-  // Get playlist ID from URL ?id=xxx
   const params = new URLSearchParams(window.location.search);
   const playlistId = params.get("id");
 
   if (!playlistId) { window.location.href = "dashboard.html"; return; }
 
-  // User info
   try {
     const data = await API.users.me();
     const user = data.user || data.data || data;
@@ -192,7 +178,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (avatarEl) avatarEl.textContent = (user.username || "U")[0].toUpperCase();
   } catch {}
 
-  // Sidebar playlists
   try {
     const data = await API.playlists.mine();
     const playlists = data.playlists || data.data || [];
@@ -213,7 +198,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const data = await API.playlists.getById(playlistId);
     const pl = data.playlist || data.data || data;
 
-    document.title = `${pl.name} – MyTune`;
+    document.title = `${pl.name} – BeatFlow`;
     document.getElementById("playlistName").textContent = pl.name;
     document.getElementById("playlistMeta").textContent =
       `${pl.songs?.length || 0} songs · ${pl.visibility || "public"}`;
@@ -273,7 +258,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
       });
 
-      // Like button
       body.querySelectorAll(".like-btn").forEach(btn => {
         btn.addEventListener("click", e => {
           e.stopPropagation();
@@ -284,19 +268,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
       });
 
-      // Play all
       document.getElementById("playAllBtn")?.addEventListener("click", () => {
         player.setQueue(playerSongs, 0);
       });
 
-      // Shuffle
       document.getElementById("shuffleBtn")?.addEventListener("click", () => {
         player.isShuffled = true;
         player.setQueue(playerSongs, Math.floor(Math.random() * playerSongs.length));
       });
     }
 
-    // Delete
     document.getElementById("deleteBtn")?.addEventListener("click", async () => {
       if (!confirm(`Delete playlist "${pl.name}"?`)) return;
       try {
@@ -314,7 +295,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       `<div class="empty-state"><i class="fa fa-exclamation-circle"></i><h3>Failed to load playlist</h3><p>${err.message}</p><a href="dashboard.html" class="btn-primary" style="display:inline-block;margin-top:16px;padding:10px 24px;border-radius:30px;">Go Home</a></div>`;
   }
 
-  // User menu dropdown
   document.getElementById("userMenuBtn")?.addEventListener("click", e => {
     e.stopPropagation();
     document.getElementById("profileDropdown")?.classList.toggle("open");

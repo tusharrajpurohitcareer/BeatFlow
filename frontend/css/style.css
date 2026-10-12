@@ -1,9 +1,3 @@
-/* ============================================================
-   MYTUNE – DESIGN SYSTEM
-   Spotify-inspired dark theme
-============================================================ */
-
-/* ---- RESET ---- */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { font-size: 16px; scroll-behavior: smooth; }
 a { text-decoration: none; color: inherit; }
@@ -11,7 +5,6 @@ ul { list-style: none; }
 button { font-family: inherit; cursor: pointer; }
 img { display: block; }
 
-/* ---- VARIABLES ---- */
 :root {
   --bg:          #121212;
   --bg-elevated: #181818;
@@ -51,19 +44,13 @@ body {
   overflow: hidden;
 }
 
-/* ---- SCROLLBAR ---- */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #404040; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #606060; }
 
-/* ---- UTILITIES ---- */
 .hidden { display: none !important; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
-
-/* ============================================================
-   AUTH PAGE (index.html)
-============================================================ */
 
 .auth-wrapper {
   display: flex;
@@ -836,7 +823,6 @@ body {
   cursor: pointer;
 }
 
-/* Right – volume + extras */
 .player-right {
   display: flex;
   align-items: center;
@@ -872,10 +858,6 @@ body {
 }
 #volumeSlider:hover { background: var(--bg-elevated); }
 
-/* ============================================================
-   RIGHT PANEL (Queue / Friends)
-============================================================ */
-
 .right-panel {
   grid-area: panel;
   background: var(--bg-elevated);
@@ -910,7 +892,6 @@ body {
 
 .panel-section h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-sub); margin-bottom: 12px; font-weight: 700; }
 
-/* Queue items */
 .queue-item {
   display: flex;
   align-items: center;
@@ -927,7 +908,6 @@ body {
 .queue-item.current { background: var(--bg-highlight); }
 .queue-item.current .queue-item-title { color: var(--green); }
 
-/* Friends activity */
 .friend-activity {
   display: flex;
   align-items: center;
@@ -968,10 +948,6 @@ body {
 .friend-info { min-width: 0; }
 .friend-name { font-size: 0.85rem; font-weight: 600; }
 .friend-listening { font-size: 0.78rem; color: var(--text-sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-/* ============================================================
-   MODALS
-============================================================ */
 
 .modal-overlay {
   position: fixed;
@@ -1052,10 +1028,6 @@ body {
 }
 .btn-ghost:hover { border-color: var(--text-base); color: var(--text-base); }
 
-/* ============================================================
-   TOAST NOTIFICATIONS
-============================================================ */
-
 #toast-container {
   position: fixed;
   bottom: calc(var(--player-h) + 16px);
@@ -1089,10 +1061,6 @@ body {
 @keyframes toastIn  { from { opacity:0; transform: translateX(100%); } to { opacity:1; transform: translateX(0); } }
 @keyframes toastOut { from { opacity:1; } to { opacity:0; transform: translateX(100%); } }
 
-/* ============================================================
-   CONTEXT MENU
-============================================================ */
-
 .context-menu {
   position: fixed;
   background: var(--bg-elevated);
@@ -1122,10 +1090,6 @@ body {
 .context-menu button:hover { background: var(--bg-highlight); color: var(--text-base); }
 .context-menu hr { border: none; border-top: 1px solid var(--border); margin: 4px 0; }
 
-/* ============================================================
-   LOADING / SKELETON
-============================================================ */
-
 .spinner {
   width: 36px;
   height: 36px;
@@ -1148,10 +1112,6 @@ body {
 .skeleton-card { height: 220px; }
 .skeleton-row  { height: 56px; margin-bottom: 4px; }
 
-/* ============================================================
-   EMPTY STATE
-============================================================ */
-
 .empty-state {
   text-align: center;
   padding: 60px 20px;
@@ -1160,10 +1120,6 @@ body {
 .empty-state i { font-size: 3rem; margin-bottom: 16px; display: block; opacity: 0.5; }
 .empty-state h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; color: var(--text-base); }
 .empty-state p { font-size: 0.88rem; }
-
-/* ============================================================
-   PLAYLIST DETAIL PAGE
-============================================================ */
 
 .playlist-hero {
   display: flex;
@@ -1218,10 +1174,6 @@ body {
 }
 .play-big-btn:hover { background: #1ed760; transform: scale(1.05); }
 
-/* ============================================================
-   PROFILE PAGE
-============================================================ */
-
 .profile-hero {
   display: flex;
   align-items: flex-end;
@@ -1250,10 +1202,6 @@ body {
 .profile-info .profile-name { font-size: 3.5rem; font-weight: 800; margin-bottom: 8px; }
 .profile-info .profile-stats { color: var(--text-sub); font-size: 0.9rem; }
 .profile-info .profile-stats span { color: var(--text-base); font-weight: 700; }
-
-/* ============================================================
-   LISTEN TOGETHER PAGE
-============================================================ */
 
 .session-card {
   background: var(--bg-elevated);
@@ -1293,10 +1241,6 @@ body {
   font-size: 0.75rem;
   font-weight: 700;
 }
-
-/* ============================================================
-   FRIENDS PAGE
-============================================================ */
 
 .friend-card {
   display: flex;
@@ -1345,16 +1289,8 @@ body {
 .btn-sm.add { background: none; border: 1.5px solid var(--text-base); color: var(--text-base); }
 .btn-sm.add:hover { background: var(--text-base); color: var(--bg); }
 
-/* ============================================================
-   ANIMATIONS
-============================================================ */
-
 @keyframes fadeIn  { from { opacity: 0; }                     to { opacity: 1; } }
 @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-
-/* ============================================================
-   RESPONSIVE
-============================================================ */
 
 @media (max-width: 1200px) {
   .app-shell {

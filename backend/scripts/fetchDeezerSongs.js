@@ -11,7 +11,6 @@ mongoose.connect(process.env.MONGO_URI)
 async function fetchSongs() {
   try {
 
-    // Fetch top 100 songs
     const response = await axios.get(
       "https://api.deezer.com/chart/0/tracks"
     );
@@ -25,7 +24,7 @@ async function fetchSongs() {
         artist: track.artist.name,
         genre: "Pop",
         mood: "Happy",
-        audioUrl: track.preview, // 30 sec preview
+        audioUrl: track.preview, 
         coverUrl: track.album.cover_medium
       });
 

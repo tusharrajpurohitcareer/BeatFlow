@@ -1,27 +1,20 @@
-/* ============================================================
-   MYTUNE API CLIENT – Centralized, token-aware API wrapper
-============================================================ */
-
 const API = (() => {
 
   const BASE = "http://localhost:5000/api";
 
-  /* ---- Auth helpers ---- */
-  const getToken = () => localStorage.getItem("token");
+    const getToken = () => localStorage.getItem("token");
 
   const authHeaders = () => ({
     "Content-Type": "application/json",
     ...(getToken() ? { Authorization: `Bearer ${getToken()}` } : {})
   });
 
-  /* ---- Core request ---- */
-  async function request(method, path, body = null) {
+    async function request(method, path, body = null) {
     const opts = { method, headers: authHeaders() };
     if (body) opts.body = JSON.stringify(body);
 
     const res = await fetch(`${BASE}${path}`, opts);
 
-    // Token expired → redirect to login
     if (res.status === 401) {
       localStorage.clear();
       window.location.href = "index.html";
@@ -42,20 +35,12 @@ const API = (() => {
   const put  = (path, body)  => request("PUT",    path, body);
   const del  = (path)        => request("DELETE", path);
 
-  /* ============================================================
-     AUTH
-  ============================================================ */
-
   const auth = {
     login:    (email, password)           => post("/auth/login",    { email, password }),
     register: (username, email, password) => post("/auth/register", { username, email, password }),
     me:       ()                          => get("/auth/me"),
     logout:   ()                          => { localStorage.clear(); window.location.href = "index.html"; }
   };
-
-  /* ============================================================
-     SONGS / MUSIC
-  ============================================================ */
 
   const songs = {
     trending:  ()          => get("/songs/trending"),
@@ -65,10 +50,6 @@ const API = (() => {
     stream:    (id)        => `${BASE}/songs/${id}/stream`,
     logPlay:   (id, data)  => post(`/songs/${id}/play`, data),
   };
-
-  /* ============================================================
-     PLAYLISTS
-  ============================================================ */
 
   const playlists = {
     all:       ()              => get("/playlists"),
@@ -81,10 +62,6 @@ const API = (() => {
     removeSong:(id, songId)    => del(`/playlists/${id}/songs/${songId}`),
   };
 
-  /* ============================================================
-     USERS / PROFILE
-  ============================================================ */
-
   const users = {
     me:        ()        => get("/users/me"),
     getById:   (id)      => get(`/users/${id}`),
@@ -93,10 +70,6 @@ const API = (() => {
     likeSong:  (songId, song) => post(`/users/me/liked/${songId}`, { song }),
     unlikeSong:(songId)  => del(`/users/me/liked/${songId}`),
   };
-
-  /* ============================================================
-     FRIENDS
-  ============================================================ */
 
   const friends = {
     list:    ()              => get("/friends"),
@@ -108,10 +81,6 @@ const API = (() => {
     remove:  (friendshipId)  => del(`/friends/${friendshipId}`),
   };
 
-  /* ============================================================
-     SESSIONS (Listen Together)
-  ============================================================ */
-
   const sessions = {
     active:  ()      => get("/sessions/active"),
     create:  (data)  => post("/sessions", data),
@@ -120,17 +89,9 @@ const API = (() => {
     getById: (id)    => get(`/sessions/${id}`),
   };
 
-  /* ============================================================
-     MOODS
-  ============================================================ */
-
   const moods = {
     get: (mood) => get(`/moods/${mood}`),
   };
-
-  /* ============================================================
-     PUBLIC INTERFACE
-  ============================================================ */
 
   return { auth, songs, playlists, users, friends, sessions, moods, getToken };
 

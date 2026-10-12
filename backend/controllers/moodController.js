@@ -1,14 +1,6 @@
-/* ==========================================
-   MOOD CONTROLLER
-========================================== */
-
 const Song  = require("../models/Song");
 const axios = require("axios");
 const { successResponse, errorResponse } = require("../utils/responseFormatter");
-
-/* ==========================================
-   Hindi mood → Deezer search queries
-========================================== */
 
 const moodQueries = {
   happy:     ["khushi ke geet", "arijit singh happy", "neha kakkar dance"],
@@ -19,10 +11,6 @@ const moodQueries = {
   angry:     ["raftaar rap", "hard hindi songs", "hindi rock"],
   motivated: ["motivational hindi songs", "jubin nautiyal", "sonu nigam upbeat"],
 };
-
-/* ==========================================
-   Fetch from Deezer with a mood query
-========================================== */
 
 async function fetchDeezerMood(mood) {
   const queries = moodQueries[mood.toLowerCase()] || ["bollywood hits"];
@@ -52,10 +40,6 @@ async function fetchDeezerMood(mood) {
     }));
 }
 
-/* ==========================================
-   Generate Mood Playlist
-========================================== */
-
 const VALID_MOODS = ["happy","sad","energetic","calm","romantic","angry","motivated"];
 
 exports.generateMoodPlaylist = async (req, res) => {
@@ -66,7 +50,6 @@ exports.generateMoodPlaylist = async (req, res) => {
       return errorResponse(res, "Invalid mood category", 400);
     }
 
-    // Try local DB first; fall back to Deezer
     let songs = await Song.find({}).limit(5);
 
     if (songs.length < 5) {

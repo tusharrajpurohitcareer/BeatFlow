@@ -1,14 +1,6 @@
-/* ==========================================
-   MYTUNE AUTH & AUTHORIZATION MIDDLEWARE
-========================================== */
-
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const { User, Playlist, Friendship } = require("../models");
-
-/* ==========================================
-   1️⃣ AUTHENTICATE TOKEN (REQUIRED)
-========================================== */
 
 exports.authenticateToken = async (req, res, next) => {
   try {
@@ -52,18 +44,12 @@ exports.authenticateToken = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   2️⃣ OPTIONAL AUTH
-   (Doesn't fail if no token)
-========================================== */
-
 exports.optionalAuth = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return next(); // continue without user
+      return next(); 
     }
 
     const token = authHeader.split(" ")[1];
@@ -78,16 +64,10 @@ exports.optionalAuth = async (req, res, next) => {
     next();
 
   } catch (error) {
-    // Ignore errors in optional auth
+
     next();
   }
 };
-
-
-/* ==========================================
-   3️⃣ CHECK OWNERSHIP
-   (For playlists or other owned resources)
-========================================== */
 
 exports.checkOwnership = (modelName, paramKey = "id") => {
   return async (req, res, next) => {
@@ -141,11 +121,6 @@ exports.checkOwnership = (modelName, paramKey = "id") => {
     }
   };
 };
-
-
-/* ==========================================
-   4️⃣ CHECK FRIENDSHIP
-========================================== */
 
 exports.checkFriendship = async (req, res, next) => {
   try {

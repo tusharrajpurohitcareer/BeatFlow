@@ -1,19 +1,11 @@
-/* ============================================================
-   MYTUNE SYNC – Real-time Listen Together via Socket.IO
-============================================================ */
-
 const Sync = (() => {
 
   let socket         = null;
   let currentSession = null;
   let isHost         = false;
-  let isSyncing      = false; // prevent feedback loops
+  let isSyncing      = false;
 
   const BASE_URL = "http://localhost:5000";
-
-  /* ============================================================
-     CONNECT
-  ============================================================ */
 
   function connect() {
     if (socket?.connected) return;
@@ -28,25 +20,18 @@ const Sync = (() => {
     socket.on("disconnect",         () => console.log("[Sync] Disconnected"));
     socket.on("connect_error",      err => console.warn("[Sync] Connection error:", err.message));
 
-    // Session events
     socket.on("session:joined",     _onSessionJoined);
     socket.on("session:left",       _onSessionLeft);
     socket.on("session:members",    _onMembersUpdate);
     socket.on("session:error",      _onError);
 
-    // Playback sync events
     socket.on("sync:play",          _onRemotePlay);
     socket.on("sync:pause",         _onRemotePause);
     socket.on("sync:seek",          _onRemoteSeek);
     socket.on("sync:song",          _onRemoteSong);
 
-    // Chat
     socket.on("chat:message",       _onChatMessage);
   }
-
-  /* ============================================================
-     SESSION MANAGEMENT
-  ============================================================ */
 
   async function createSession(name, mode = "public") {
     try {
@@ -67,7 +52,6 @@ const Sync = (() => {
     if (!code) return;
     code = code.toUpperCase().trim();
 
-    // Connect socket if not already
     if (!socket?.connected) connect();
 
     try {
@@ -87,7 +71,7 @@ const Sync = (() => {
     if (!currentSession) return;
     try {
       await API.sessions.leave(currentSession._id);
-    } catch { /* ignore */ }
+    } catch {  }
 
     if (socket?.connected) {
       socket.emit("session:leave", { sessionCode: currentSession.sessionCode });
@@ -105,10 +89,6 @@ const Sync = (() => {
     if (!socket?.connected) connect();
     socket.emit("session:join", { sessionCode: code });
   }
-
-  /* ============================================================
-     BROADCAST PLAYBACK (host → everyone)
-  ============================================================ */
 
   function broadcastPlay() {
     if (!isHost || !currentSession || isSyncing) return;
@@ -141,10 +121,6 @@ const Sync = (() => {
       song,
     });
   }
-
-  /* ============================================================
-     RECEIVE PLAYBACK (non-host ← host)
-  ============================================================ */
 
   function _onRemotePlay(data) {
     if (isHost) return;
@@ -180,10 +156,6 @@ const Sync = (() => {
     }
   }
 
-  /* ============================================================
-     SESSION SOCKET EVENTS
-  ============================================================ */
-
   function _onSessionJoined(data) {
     console.log("[Sync] Session joined:", data);
     _updateMemberCount(data.members?.length || 0);
@@ -205,10 +177,6 @@ const Sync = (() => {
     showToast(data.message || "Session error", "error");
   }
 
-  /* ============================================================
-     CHAT
-  ============================================================ */
-
   function sendMessage(text) {
     if (!socket?.connected || !currentSession || !text.trim()) return;
     socket.emit("chat:send", {
@@ -218,13 +186,9 @@ const Sync = (() => {
   }
 
   function _onChatMessage(data) {
-    // Append to session chat if open
+
     console.log("[Chat]", data.username, ":", data.text);
   }
-
-  /* ============================================================
-     UI HELPERS
-  ============================================================ */
 
   function _showSessionPanel(session) {
     const panel  = document.getElementById("activeSessionPanel");
@@ -272,7 +236,6 @@ const Sync = (() => {
     player.audio.addEventListener("pause", () => { if (!isSyncing) broadcastPause(); });
     player.audio.addEventListener("seeked",() => { if (!isSyncing) broadcastSeek(player.audio.currentTime); });
 
-    // Hook playSong to broadcast new song
     const origPlaySong = player.playSong.bind(player);
     player.playSong = function(song, ...args) {
       origPlaySong(song, ...args);
@@ -280,11 +243,6 @@ const Sync = (() => {
     };
   }
 
-  /* ============================================================
-     PUBLIC
-  ============================================================ */
-
-  // Auto-connect if token exists
   document.addEventListener("DOMContentLoaded", () => {
     if (API.getToken()) {
       setTimeout(() => {

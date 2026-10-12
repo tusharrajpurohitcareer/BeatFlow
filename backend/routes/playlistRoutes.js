@@ -5,8 +5,6 @@ const playlistController = require("../controllers/playlistController");
 const { authenticateToken } = require("../middleware/auth");
 const { validatePlaylist } = require("../middleware/validation");
 
-/* PLAYLIST ROUTES */
-
 router.get("/", authenticateToken, playlistController.getPlaylists);
 
 router.get("/my", authenticateToken, playlistController.getPlaylists);

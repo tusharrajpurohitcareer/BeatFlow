@@ -1,21 +1,9 @@
-/* ==========================================
-   MYTUNE FRIENDS CONTROLLER
-========================================== */
-
 const mongoose = require("mongoose");
 const { User, Friendship, PlayHistory } = require("../models");
-
-/* ==========================================
-   HELPER: SEND MOCK NOTIFICATION
-========================================== */
 
 const sendNotification = (userId, message) => {
   console.log(`🔔 Notification to ${userId}: ${message}`);
 };
-
-/* ==========================================
-   1️⃣ SEND FRIEND REQUEST
-========================================== */
 
 exports.sendFriendRequest = async (req, res, next) => {
   try {
@@ -64,11 +52,6 @@ exports.sendFriendRequest = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   2️⃣ GET PENDING FRIEND REQUESTS
-========================================== */
-
 exports.getFriendRequests = async (req, res, next) => {
   try {
     const requests = await Friendship.find({
@@ -85,11 +68,6 @@ exports.getFriendRequests = async (req, res, next) => {
     next(error);
   }
 };
-
-
-/* ==========================================
-   3️⃣ ACCEPT FRIEND REQUEST
-========================================== */
 
 exports.acceptFriendRequest = async (req, res, next) => {
   try {
@@ -120,11 +98,6 @@ exports.acceptFriendRequest = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   4️⃣ DECLINE FRIEND REQUEST
-========================================== */
-
 exports.declineFriendRequest = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -150,11 +123,6 @@ exports.declineFriendRequest = async (req, res, next) => {
     next(error);
   }
 };
-
-
-/* ==========================================
-   5️⃣ GET FRIENDS LIST
-========================================== */
 
 exports.getFriends = async (req, res, next) => {
   try {
@@ -186,11 +154,6 @@ exports.getFriends = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   6️⃣ REMOVE FRIEND
-========================================== */
-
 exports.removeFriend = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -219,14 +182,9 @@ exports.removeFriend = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   7️⃣ FRIEND SUGGESTIONS
-========================================== */
-
 exports.getFriendSuggestions = async (req, res, next) => {
   try {
-    // Get current friends
+
     const friendships = await Friendship.find({
       $or: [
         { user1: req.user._id },
@@ -239,7 +197,6 @@ exports.getFriendSuggestions = async (req, res, next) => {
       f.user1.equals(req.user._id) ? f.user2 : f.user1
     );
 
-    // Find users not already friends
     const suggestions = await User.find({
       _id: {
         $ne: req.user._id,
@@ -258,11 +215,6 @@ exports.getFriendSuggestions = async (req, res, next) => {
     next(error);
   }
 };
-
-
-/* ==========================================
-   8️⃣ BLOCK USER
-========================================== */
 
 exports.blockUser = async (req, res, next) => {
   try {

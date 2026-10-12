@@ -1,26 +1,19 @@
-/* ============================================================
-   MYTUNE CORE PLAYER  –  Full-featured HTML5 audio player
-============================================================ */
-
-class MyTunePlayer {
+class BeatFlowPlayer {
 
   constructor() {
     this.audio        = new Audio();
     this.audio.preload = "metadata";
 
-    // State
     this.queue        = JSON.parse(localStorage.getItem("mt_queue")) || [];
     this.currentIndex = parseInt(localStorage.getItem("mt_index")) || 0;
     this.isShuffled   = false;
-    this.repeatMode   = "off"; // off | all | one
+    this.repeatMode   = "off"; 
     this.likedSongs   = new Set(JSON.parse(localStorage.getItem("mt_liked")) || []);
     this.currentSong  = null;
 
-    // Volume
     this.volume = parseFloat(localStorage.getItem("mt_volume") ?? "1");
     this.audio.volume = this.volume;
 
-    // DOM refs – safe (elements might not exist on auth page)
     this.$play     = () => document.getElementById("playPauseBtn");
     this.$prev     = () => document.getElementById("prevBtn");
     this.$next     = () => document.getElementById("nextBtn");
@@ -40,20 +33,11 @@ class MyTunePlayer {
     this._restoreState();
   }
 
-  /* ----------------------------------------------------------
-     LOAD & PLAY
-  ---------------------------------------------------------- */
-
-  /**
-   * song = { id, title, artist, url, cover }
-   * url can be a Deezer preview URL or /api/songs/:id/stream
-   */
   playSong(song, addToQueue = true) {
     if (!song?.url) return;
 
     this.currentSong = song;
 
-    // Add to queue if not already the current track
     if (addToQueue) {
       const exists = this.queue.findIndex(s => s.id === song.id);
       if (exists !== -1) {
@@ -74,15 +58,12 @@ class MyTunePlayer {
       showToast("Cannot play this song", "error");
     });
 
-    // Log play event
     if (song.id && typeof API !== "undefined") {
       API.songs.logPlay(song.id, { source: "dashboard" }).catch(() => {});
     }
 
-    // Update queue panel
     this._renderQueue();
 
-    // Highlight active song rows
     document.querySelectorAll(".song-row").forEach(r => {
       r.classList.toggle("playing", r.dataset.songId === String(song.id));
     });
@@ -124,10 +105,6 @@ class MyTunePlayer {
     this.currentIndex = Math.max(0, this.currentIndex - 1);
     this.playFromQueue(this.currentIndex);
   }
-
-  /* ----------------------------------------------------------
-     QUEUE
-  ---------------------------------------------------------- */
 
   addToQueue(song) {
     this.queue.push(song);
@@ -172,10 +149,6 @@ class MyTunePlayer {
       </div>`;
   }
 
-  /* ----------------------------------------------------------
-     SHUFFLE / REPEAT
-  ---------------------------------------------------------- */
-
   toggleShuffle() {
     this.isShuffled = !this.isShuffled;
     const btn = this.$shuffle();
@@ -205,10 +178,6 @@ class MyTunePlayer {
     showToast(`Repeat: ${this.repeatMode}`, "info");
   }
 
-  /* ----------------------------------------------------------
-     SEEK & VOLUME
-  ---------------------------------------------------------- */
-
   seek(val) { this.audio.currentTime = parseFloat(val); }
 
   setVolume(val) {
@@ -231,10 +200,6 @@ class MyTunePlayer {
     else if (v < 0.5) icon.className = "fa fa-volume-down";
     else icon.className = "fa fa-volume-up";
   }
-
-  /* ----------------------------------------------------------
-     LIKED SONGS
-  ---------------------------------------------------------- */
 
   async toggleLike(songId, songObj) {
     if (!songId) return;
@@ -268,10 +233,6 @@ class MyTunePlayer {
     btn.innerHTML = liked ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>';
   }
 
-  /* ----------------------------------------------------------
-     UI UPDATES
-  ---------------------------------------------------------- */
-
   _updateNowPlayingUI(song) {
     const defaultCover = this._defaultCover();
     const cover  = this.$cover();
@@ -280,7 +241,7 @@ class MyTunePlayer {
     if (cover)  cover.src = song.cover || defaultCover;
     if (title)  title.textContent = song.title  || "Unknown";
     if (artist) artist.textContent = song.artist || "Unknown Artist";
-    document.title = `${song.title} – MyTune`;
+    document.title = `${song.title} – BeatFlow`;
     this._updateHeartUI();
   }
 
@@ -331,10 +292,8 @@ class MyTunePlayer {
       this._setPlayIcon(false);
     });
 
-    // Wait for DOM to be ready for buttons
     document.addEventListener("DOMContentLoaded", () => this._bindButtons());
 
-    // Keyboard shortcuts
     document.addEventListener("keydown", e => {
       if (["INPUT","TEXTAREA"].includes(e.target.tagName)) return;
       switch (e.code) {
@@ -363,21 +322,16 @@ class MyTunePlayer {
     this.$progress()?.addEventListener("input", e => this.seek(e.target.value));
     this.$volume()?.addEventListener("input",   e => this.setVolume(e.target.value));
 
-    // Set volume slider to saved value
     const volSlider = this.$volume();
     if (volSlider) { volSlider.value = Math.round(this.volume * 100); }
     this._updateVolumeIcon(this.volume);
   }
 
-  /* ----------------------------------------------------------
-     RESTORE STATE
-  ---------------------------------------------------------- */
-
   _restoreState() {
     if (this.queue.length > 0 && this.queue[this.currentIndex]) {
       const song = this.queue[this.currentIndex];
       this.currentSong = song;
-      // Just update UI, don't auto-play
+
       setTimeout(() => {
         this._updateNowPlayingUI(song);
         this._renderQueue();
@@ -387,15 +341,10 @@ class MyTunePlayer {
     }
   }
 
-  // Call periodically to save position
   _savePosition() {
     localStorage.setItem("mt_position", this.audio.currentTime);
   }
 }
-
-/* ============================================================
-   GLOBAL TOAST (available to all scripts)
-============================================================ */
 
 function showToast(message, type = "info") {
   const container = document.getElementById("toast-container");
@@ -411,9 +360,5 @@ function showToast(message, type = "info") {
   setTimeout(() => t.remove(), 3200);
 }
 
-/* ============================================================
-   BOOT
-============================================================ */
-
-const player = new MyTunePlayer();
+const player = new BeatFlowPlayer();
 setInterval(() => player._savePosition(), 5000);

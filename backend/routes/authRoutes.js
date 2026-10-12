@@ -5,8 +5,6 @@ const authController = require("../controllers/authController");
 const { validateRegistration, validateLogin } = require("../middleware/validation");
 const { authLimiter } = require("../middleware/rateLimiter");
 
-/* AUTH ROUTES */
-
 router.post("/register", authLimiter, validateRegistration, authController.register);
 
 router.post("/login", authLimiter, validateLogin, authController.login);

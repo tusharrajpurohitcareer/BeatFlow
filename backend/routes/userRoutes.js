@@ -4,8 +4,6 @@ const router = express.Router();
 const userController = require("../controllers/userController");
 const { authenticateToken } = require("../middleware/auth");
 
-/* USER ROUTES */
-
 router.get("/me", authenticateToken, userController.getProfile);
 
 router.put("/me", authenticateToken, userController.updateProfile);

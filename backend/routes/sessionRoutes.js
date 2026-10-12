@@ -4,8 +4,6 @@ const router = express.Router();
 const sessionController = require("../controllers/sessionController");
 const { authenticateToken } = require("../middleware/auth");
 
-/* SESSION ROUTES (ALL PROTECTED) */
-
 router.use(authenticateToken);
 
 router.post("/", sessionController.createSession);

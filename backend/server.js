@@ -1,7 +1,3 @@
-/* ==========================================
-   MYTUNE BACKEND SERVER
-========================================== */
-
 require("dotenv").config();
 
 const express = require("express");
@@ -17,17 +13,9 @@ const logger = require("./utils/logger");
 const app = express();
 const server = http.createServer(app);
 
-/* ==========================================
-   DATABASE CONNECTION
-========================================== */
-
 if (process.env.NODE_ENV !== "test") {
   connectDB();
 }
-
-/* ==========================================
-   SOCKET.IO SETUP
-========================================== */
 
 const io = new Server(server, {
   cors: {
@@ -38,10 +26,6 @@ const io = new Server(server, {
 
 require("./config/socket")(io);
 
-/* ==========================================
-   GLOBAL MIDDLEWARE
-========================================== */
-
 app.use(helmet());
 
 app.use(cors({
@@ -51,18 +35,12 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rate limiting
 app.use(rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100
 }));
 
-// Static uploads
 app.use("/uploads", express.static("uploads"));
-
-/* ==========================================
-   HEALTH CHECK
-========================================== */
 
 app.get("/health", (req, res) => {
   res.status(200).json({
@@ -72,22 +50,10 @@ app.get("/health", (req, res) => {
   });
 });
 
-/* ==========================================
-   ROUTES
-========================================== */
-
 require("./routes")(app);
-
-/* ==========================================
-   GLOBAL ERROR HANDLER
-========================================== */
 
 const errorHandler = require("./middleware/errorHandler");
 app.use(errorHandler);
-
-/* ==========================================
-   GRACEFUL SHUTDOWN
-========================================== */
 
 process.on("SIGTERM", async () => {
   logger.info("SIGTERM received. Shutting down gracefully...");
@@ -96,10 +62,6 @@ process.on("SIGTERM", async () => {
     process.exit(0);
   });
 });
-
-/* ==========================================
-   START SERVER
-========================================== */
 
 const PORT = process.env.PORT || 5000;
 

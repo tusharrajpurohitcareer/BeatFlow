@@ -1,16 +1,7 @@
-/* ==========================================
-   MYTUNE MUSIC CONTROLLER
-========================================== */
-
 const fs = require("fs");
 const path = require("path");
 const mongoose = require("mongoose");
 const { Song, PlayHistory, User } = require("../models");
-
-/* ==========================================
-   1️⃣ SEARCH SONGS
-   GET /api/songs/search?q=
-========================================== */
 
 exports.searchSongs = async (req, res, next) => {
   try {
@@ -51,11 +42,6 @@ exports.searchSongs = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   2️⃣ GET SONG BY ID
-========================================== */
-
 exports.getSongById = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -70,7 +56,6 @@ exports.getSongById = async (req, res, next) => {
       return res.status(404).json({ success: false, message: "Song not found" });
     }
 
-    // Increment play count view
     song.stats.totalPlays += 1;
     await song.save();
 
@@ -83,11 +68,6 @@ exports.getSongById = async (req, res, next) => {
     next(error);
   }
 };
-
-
-/* ==========================================
-   3️⃣ STREAM SONG (WITH RANGE SUPPORT)
-========================================== */
 
 exports.streamSong = async (req, res, next) => {
   try {
@@ -142,11 +122,6 @@ exports.streamSong = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   4️⃣ LOG PLAY EVENT
-========================================== */
-
 exports.logPlayEvent = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -166,11 +141,9 @@ exports.logPlayEvent = async (req, res, next) => {
       source
     });
 
-    // Update song stats
     song.stats.totalPlays += 1;
     await song.save();
 
-    // Update user stats
     await User.findByIdAndUpdate(req.user._id, {
       $inc: {
         "stats.totalPlays": 1,
@@ -187,11 +160,6 @@ exports.logPlayEvent = async (req, res, next) => {
     next(error);
   }
 };
-
-
-/* ==========================================
-   5️⃣ GET SONGS BY GENRE
-========================================== */
 
 exports.getSongsByGenre = async (req, res, next) => {
   try {
@@ -213,14 +181,8 @@ exports.getSongsByGenre = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   6️⃣ TRENDING SONGS (LAST 7 DAYS)
-========================================== */
-
 const axios = require("axios");
 
-// Bollywood / Hindi artists to rotate through for variety
 const HINDI_QUERIES = [
   "arijit singh",
   "shreya ghoshal",
@@ -236,7 +198,7 @@ const HINDI_QUERIES = [
 
 exports.getTrendingSongs = async (req, res) => {
   try {
-    // Pick a random Hindi query for variety, fall back to env var
+
     const query = process.env.DEEZER_SEARCH_QUERY ||
       HINDI_QUERIES[Math.floor(Math.random() * HINDI_QUERIES.length)];
 
@@ -252,7 +214,7 @@ exports.getTrendingSongs = async (req, res) => {
     );
 
     const songs = (response.data.data || [])
-      .filter(track => track.preview) // only songs that have a playable preview
+      .filter(track => track.preview) 
       .map(track => ({
         id:      track.id,
         title:   track.title,

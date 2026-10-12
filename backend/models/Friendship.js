@@ -37,16 +37,7 @@ const friendshipSchema = new mongoose.Schema(
   }
 );
 
-/* ==========================================
-   COMPOUND INDEX
-========================================== */
-
-// Prevent duplicate friendships
 friendshipSchema.index({ user1: 1, user2: 1 }, { unique: true });
-
-/* ==========================================
-   STATIC METHOD
-========================================== */
 
 friendshipSchema.statics.areFriends = async function (userA, userB) {
   return await this.findOne({

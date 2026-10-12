@@ -20,7 +20,7 @@ const songSchema = new mongoose.Schema(
     },
 
     duration: {
-      type: Number, // seconds
+      type: Number, 
       min: 0
     },
 
@@ -68,7 +68,7 @@ const songSchema = new mongoose.Schema(
     },
 
     metadata: {
-      tempo: { type: Number }, // BPM
+      tempo: { type: Number }, 
       energy: { type: Number, min: 0, max: 1 },
       danceability: { type: Number, min: 0, max: 1 },
       valence: { type: Number, min: 0, max: 1 }
@@ -84,17 +84,9 @@ const songSchema = new mongoose.Schema(
   }
 );
 
-/* ==========================================
-   INDEXES
-========================================== */
-
 songSchema.index({ title: "text", artist: "text", album: "text" });
 songSchema.index({ genre: 1 });
 songSchema.index({ releaseYear: 1 });
-
-/* ==========================================
-   VIRTUALS
-========================================== */
 
 songSchema.virtual("formattedDuration").get(function () {
   const mins = Math.floor(this.duration / 60);

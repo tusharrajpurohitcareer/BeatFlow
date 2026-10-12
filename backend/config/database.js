@@ -1,7 +1,3 @@
-/* ==========================================
-   DATABASE CONFIGURATION
-========================================== */
-
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
@@ -15,7 +11,6 @@ const connectDB = async () => {
       w: "majority"
     });
 
-    // ✅ Only log in non-test environments
     if (process.env.NODE_ENV !== "test") {
       console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
     }
@@ -25,10 +20,6 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
-
-/* ==========================================
-   CONNECTION EVENTS (Disable in test)
-========================================== */
 
 if (process.env.NODE_ENV !== "test") {
 
@@ -43,10 +34,6 @@ if (process.env.NODE_ENV !== "test") {
   mongoose.connection.on("disconnected", () => {
     console.warn("⚠ MongoDB disconnected");
   });
-
-  /* ==========================================
-     GRACEFUL SHUTDOWN
-  ========================================== */
 
   process.on("SIGINT", async () => {
     await mongoose.connection.close();

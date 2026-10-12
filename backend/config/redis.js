@@ -1,7 +1,3 @@
-/* ==========================================
-   REDIS CONFIGURATION
-========================================== */
-
 const Redis = require("ioredis");
 
 const redis = new Redis({
@@ -23,10 +19,6 @@ redis.on("error", (err) => {
 redis.on("close", () => {
   console.warn("⚠ Redis connection closed");
 });
-
-/* ==========================================
-   HELPER FUNCTIONS
-========================================== */
 
 const get = async (key) => {
   return await redis.get(key);

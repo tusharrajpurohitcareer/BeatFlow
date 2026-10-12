@@ -1,0 +1,42 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    restart: unless-stopped
+
+    environment:
+      PORT: 5000
+      MONGO_URI: mongodb://mongo:27017/mytunes
+
+    expose:
+      - "5000"
+
+    depends_on:
+      mongo:
+        condition: service_started
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    restart: unless-stopped
+
+    ports:
+      - "3000:80"
+
+    depends_on:
+      - backend
+
+  mongo:
+    image: mongo:8
+
+    restart: unless-stopped
+
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

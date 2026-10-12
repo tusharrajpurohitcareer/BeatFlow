@@ -1,21 +1,9 @@
-/* ==========================================
-   MYTUNE LISTENING SESSION CONTROLLER
-========================================== */
-
 const mongoose = require("mongoose");
 const { ListeningSession, Friendship, User } = require("../models");
-
-/* ==========================================
-   HELPER: GENERATE SESSION CODE
-========================================== */
 
 const generateSessionCode = () => {
   return Math.random().toString(36).substring(2, 8).toUpperCase();
 };
-
-/* ==========================================
-   1️⃣ CREATE SESSION
-========================================== */
 
 exports.createSession = async (req, res, next) => {
   try {
@@ -40,11 +28,6 @@ exports.createSession = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   2️⃣ GET SESSION
-========================================== */
-
 exports.getSession = async (req, res, next) => {
   try {
     const session = await ListeningSession.findById(req.params.id)
@@ -55,7 +38,6 @@ exports.getSession = async (req, res, next) => {
       return res.status(404).json({ success: false, message: "Session not found" });
     }
 
-    // Privacy check
     if (session.mode === "private" &&
         !session.host._id.equals(req.user._id)) {
       return res.status(403).json({ success: false, message: "Access denied" });
@@ -71,11 +53,6 @@ exports.getSession = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   3️⃣ JOIN SESSION
-========================================== */
-
 exports.joinSession = async (req, res, next) => {
   try {
     const session = await ListeningSession.findById(req.params.id);
@@ -84,13 +61,11 @@ exports.joinSession = async (req, res, next) => {
       return res.status(404).json({ success: false, message: "Session not found" });
     }
 
-    // Check if already joined
     if (!session.participants.find(p => p.userId.equals(req.user._id))) {
       session.participants.push({ userId: req.user._id });
       await session.save();
     }
 
-    // Emit socket event
     req.io.to(session._id.toString()).emit("session:userJoined", {
       userId: req.user._id
     });
@@ -105,11 +80,6 @@ exports.joinSession = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   4️⃣ LEAVE SESSION
-========================================== */
-
 exports.leaveSession = async (req, res, next) => {
   try {
     const session = await ListeningSession.findById(req.params.id);
@@ -122,10 +92,9 @@ exports.leaveSession = async (req, res, next) => {
       p => !p.userId.equals(req.user._id)
     );
 
-    // If host leaves
     if (session.host.equals(req.user._id)) {
       if (session.participants.length > 0) {
-        // Transfer host
+
         session.host = session.participants[0].userId;
       } else {
         await session.deleteOne();
@@ -151,11 +120,6 @@ exports.leaveSession = async (req, res, next) => {
     next(error);
   }
 };
-
-
-/* ==========================================
-   5️⃣ INVITE TO SESSION
-========================================== */
 
 exports.inviteToSession = async (req, res, next) => {
   try {
@@ -183,11 +147,6 @@ exports.inviteToSession = async (req, res, next) => {
     next(error);
   }
 };
-
-
-/* ==========================================
-   6️⃣ UPDATE SESSION QUEUE
-========================================== */
 
 exports.updateSessionQueue = async (req, res, next) => {
   try {
@@ -218,11 +177,6 @@ exports.updateSessionQueue = async (req, res, next) => {
     next(error);
   }
 };
-
-
-/* ==========================================
-   7️⃣ GET ACTIVE SESSIONS
-========================================== */
 
 exports.getActiveSessions = async (req, res, next) => {
   try {

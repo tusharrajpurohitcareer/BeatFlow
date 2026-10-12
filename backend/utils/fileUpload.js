@@ -1,11 +1,6 @@
-/* ==========================================
-   FILE UPLOAD CONFIG (MULTER)
-========================================== */
-
 const multer = require("multer");
 const path = require("path");
 
-/* Storage Config */
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     if (file.mimetype.startsWith("image")) {
@@ -21,7 +16,6 @@ const storage = multer.diskStorage({
   }
 });
 
-/* File Filter */
 const fileFilter = (req, file, cb) => {
   if (
     file.mimetype.startsWith("image") ||
@@ -33,10 +27,9 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-/* Limits */
 const upload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+  limits: { fileSize: 10 * 1024 * 1024 }, 
   fileFilter
 });
 

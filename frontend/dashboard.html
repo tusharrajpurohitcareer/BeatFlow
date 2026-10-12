@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MyTune – Music for Everyone</title>
+  <title>BeatFlow – Music for Everyone</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -11,9 +11,8 @@
 
 <div class="app-shell" id="appShell">
 
-  <!-- ========== SIDEBAR ========== -->
   <nav class="sidebar">
-    <div class="sidebar-logo">🎵 MyTune</div>
+    <div class="sidebar-logo">🎵 BeatFlow</div>
 
     <ul class="sidebar-nav">
       <li class="nav-item active" data-page="home">
@@ -51,15 +50,13 @@
         </button>
       </div>
       <ul id="sidebarPlaylists">
-        <!-- Dynamic -->
+
       </ul>
     </div>
   </nav>
 
-  <!-- ========== MAIN CONTENT ========== -->
   <div class="main-content">
 
-    <!-- Top Bar -->
     <div class="top-bar">
       <div class="nav-arrows">
         <button onclick="history.back()"><i class="fa fa-chevron-left"></i></button>
@@ -94,7 +91,6 @@
       </div>
     </div>
 
-    <!-- ===== HOME PAGE ===== -->
     <div class="page active" id="page-home">
       <div class="page-header">
         <h1 id="greetingText">Good Evening</h1>
@@ -102,14 +98,13 @@
       </div>
       <div class="page-body">
 
-        <!-- Trending -->
         <div class="section">
           <div class="section-header">
             <h2>Trending Now</h2>
             <a href="#" id="seeAllTrending">See all</a>
           </div>
           <div class="cards-grid" id="trendingGrid">
-            <!-- skeleton -->
+
             <div class="skeleton skeleton-card"></div>
             <div class="skeleton skeleton-card"></div>
             <div class="skeleton skeleton-card"></div>
@@ -118,7 +113,6 @@
           </div>
         </div>
 
-        <!-- Browse by Mood -->
         <div class="section">
           <div class="section-header">
             <h2>Browse by Mood</h2>
@@ -126,7 +120,6 @@
           <div class="mood-grid" id="moodGrid"></div>
         </div>
 
-        <!-- Your Playlists -->
         <div class="section" id="userPlaylistsSection">
           <div class="section-header">
             <h2>Your Playlists</h2>
@@ -144,7 +137,6 @@
       </div>
     </div>
 
-    <!-- ===== SEARCH PAGE ===== -->
     <div class="page" id="page-search">
       <div class="page-header">
         <h1>Search Results</h1>
@@ -161,7 +153,6 @@
       </div>
     </div>
 
-    <!-- ===== LIBRARY PAGE ===== -->
     <div class="page" id="page-library">
       <div class="page-header purple">
         <h1>Your Library</h1>
@@ -179,7 +170,6 @@
       </div>
     </div>
 
-    <!-- ===== LIKED SONGS PAGE ===== -->
     <div class="page" id="page-liked">
       <div class="page-header green">
         <h1><i class="fa fa-heart"></i> Liked Songs</h1>
@@ -210,14 +200,13 @@
       </div>
     </div>
 
-    <!-- ===== FRIENDS PAGE ===== -->
     <div class="page" id="page-friends">
       <div class="page-header teal">
         <h1>Friends</h1>
         <p>Connect and share music</p>
       </div>
       <div class="page-body">
-        <!-- Add friend -->
+
         <div class="section">
           <div class="section-header"><h2>Add Friend</h2></div>
           <div style="display:flex;gap:10px;max-width:400px;">
@@ -226,12 +215,12 @@
           </div>
           <div id="friendSearchResults" style="margin-top:16px;"></div>
         </div>
-        <!-- Pending requests -->
+
         <div class="section" id="pendingSection">
           <div class="section-header"><h2>Pending Requests</h2></div>
           <div id="pendingList"></div>
         </div>
-        <!-- Friends list -->
+
         <div class="section">
           <div class="section-header"><h2>Your Friends</h2></div>
           <div id="friendsList"></div>
@@ -239,7 +228,6 @@
       </div>
     </div>
 
-    <!-- ===== LISTEN TOGETHER PAGE ===== -->
     <div class="page" id="page-listen-together">
       <div class="page-header">
         <h1>Listen Together</h1>
@@ -261,7 +249,7 @@
             <i class="fa fa-plus"></i> Create Session
           </button>
         </div>
-        <!-- Active session panel -->
+
         <div id="activeSessionPanel" class="hidden" style="margin-top:32px;">
           <div style="background:var(--bg-elevated);border-radius:12px;padding:24px;border:1px solid var(--border);">
             <h3 id="sessionName" style="margin-bottom:8px;">Session Name</h3>
@@ -277,7 +265,6 @@
       </div>
     </div>
 
-    <!-- ===== MOOD SONGS PAGE ===== -->
     <div class="page" id="page-mood-songs">
       <div class="playlist-hero" id="moodSongsHero">
         <div class="playlist-hero-cover placeholder" id="moodSongsCover" style="font-size:3rem;display:flex;align-items:center;justify-content:center;"></div>
@@ -312,7 +299,6 @@
       </div>
     </div>
 
-    <!-- ===== PLAYLIST DETAIL PAGE ===== -->
     <div class="page" id="page-playlist-detail">
       <div class="playlist-hero" id="playlistHero">
         <div class="playlist-hero-cover placeholder" id="playlistCoverLg">🎵</div>
@@ -349,7 +335,6 @@
       </div>
     </div>
 
-    <!-- ===== PROFILE PAGE ===== -->
     <div class="page" id="page-profile">
       <div class="profile-hero">
         <div class="profile-avatar-lg" id="profileAvatarLg">U</div>
@@ -378,16 +363,14 @@
       </div>
     </div>
 
-  </div><!-- end .main-content -->
+  </div>
 
-  <!-- ========== RIGHT PANEL ========== -->
   <aside class="right-panel" id="rightPanel" style="display:none;">
     <div class="panel-tabs">
       <button class="panel-tab active" data-panel="queue">Queue</button>
       <button class="panel-tab" data-panel="friends-activity">Friends</button>
     </div>
 
-    <!-- Queue -->
     <div class="panel-section active" id="panelQueue">
       <h4>Now Playing</h4>
       <div id="queueNowPlaying" style="margin-bottom:16px;"></div>
@@ -395,7 +378,6 @@
       <div id="queueList"></div>
     </div>
 
-    <!-- Friends Activity -->
     <div class="panel-section" id="panelFriendsActivity">
       <h4>Friends Listening</h4>
       <div id="friendsActivityList">
@@ -407,10 +389,8 @@
     </div>
   </aside>
 
-  <!-- ========== PLAYER BAR ========== -->
   <footer class="player-bar">
 
-    <!-- Left: Now Playing -->
     <div class="player-now-playing">
       <img class="player-cover" id="currentCover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='54' height='54' viewBox='0 0 54 54'%3E%3Crect width='54' height='54' fill='%23282828'/%3E%3Ctext x='27' y='35' text-anchor='middle' font-size='24' fill='%23555'%3E♪%3C/text%3E%3C/svg%3E" alt="cover">
       <div class="player-song-info">
@@ -422,7 +402,6 @@
       </button>
     </div>
 
-    <!-- Center: Controls + Progress -->
     <div class="player-center">
       <div class="player-controls">
         <button class="ctrl-btn" id="shuffleBtn" title="Shuffle"><i class="fa fa-random"></i></button>
@@ -438,7 +417,6 @@
       </div>
     </div>
 
-    <!-- Right: Volume + extras -->
     <div class="player-right">
       <div class="vol-ctrl">
         <i class="fa fa-volume-up" id="volumeIcon"></i>
@@ -448,9 +426,8 @@
 
   </footer>
 
-</div><!-- end .app-shell -->
+</div>
 
-<!-- ========== CREATE PLAYLIST MODAL ========== -->
 <div class="modal-overlay hidden" id="createPlaylistModal">
   <div class="modal">
     <button class="modal-close" id="closeCreatePlaylist"><i class="fa fa-times"></i></button>
@@ -469,7 +446,6 @@
   </div>
 </div>
 
-<!-- ========== CREATE SESSION MODAL ========== -->
 <div class="modal-overlay hidden" id="createSessionModal">
   <div class="modal">
     <button class="modal-close" id="closeCreateSession"><i class="fa fa-times"></i></button>
@@ -487,7 +463,6 @@
   </div>
 </div>
 
-<!-- ========== JOIN SESSION MODAL ========== -->
 <div class="modal-overlay hidden" id="joinSessionModal">
   <div class="modal">
     <button class="modal-close" id="closeJoinSession"><i class="fa fa-times"></i></button>
@@ -500,7 +475,6 @@
   </div>
 </div>
 
-<!-- ========== ADD TO PLAYLIST MODAL ========== -->
 <div class="modal-overlay hidden" id="addToPlaylistModal">
   <div class="modal">
     <button class="modal-close" id="closeAddToPlaylist"><i class="fa fa-times"></i></button>
@@ -509,7 +483,6 @@
   </div>
 </div>
 
-<!-- ========== CONTEXT MENU ========== -->
 <div class="context-menu" id="contextMenu">
   <button id="ctxPlay"><i class="fa fa-play"></i> Play</button>
   <button id="ctxLike"><i class="far fa-heart"></i> Like</button>
@@ -519,10 +492,8 @@
   <button id="ctxShare"><i class="fa fa-share"></i> Share</button>
 </div>
 
-<!-- ========== TOAST CONTAINER ========== -->
 <div id="toast-container"></div>
 
-<!-- ========== SCRIPTS ========== -->
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script src="js/api.js"></script>
 <script src="js/player.js"></script>

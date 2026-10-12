@@ -1,8 +1,3 @@
-/* ============================================================
-   MYTUNE AUTH – Login / Register
-============================================================ */
-
-/* ---- Toast (inline since player.js not loaded on auth page) ---- */
 function showToast(message, type = "info") {
   let container = document.getElementById("toast-container");
   if (!container) {
@@ -27,7 +22,6 @@ function showToast(message, type = "info") {
   setTimeout(() => t.remove(), 3200);
 }
 
-/* ---- Inject keyframe if not already in stylesheet ---- */
 if (!document.querySelector("#authToastStyle")) {
   const s = document.createElement("style");
   s.id = "authToastStyle";
@@ -35,13 +29,8 @@ if (!document.querySelector("#authToastStyle")) {
   document.head.appendChild(s);
 }
 
-/* ============================================================
-   DOM READY
-============================================================ */
-
 document.addEventListener("DOMContentLoaded", () => {
 
-  // Redirect if already logged in
   if (localStorage.getItem("token")) {
     window.location.href = "dashboard.html";
     return;
@@ -52,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginToggle  = document.getElementById("loginToggle");
   const registerToggle = document.getElementById("registerToggle");
 
-  /* ---- Form toggle ---- */
   loginToggle?.addEventListener("click", () => {
     loginForm.classList.add("active-form");
     registerForm.classList.remove("active-form");
@@ -67,7 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loginToggle.classList.remove("active");
   });
 
-  /* ---- Password show/hide ---- */
   document.querySelectorAll(".toggle-password").forEach(icon => {
     icon.addEventListener("click", () => {
       const input = icon.closest(".password-field").querySelector("input");
@@ -78,21 +65,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* ---- Helper: set button loading state ---- */
   function setLoading(btn, loading) {
     btn.disabled = loading;
     btn.style.opacity = loading ? "0.7" : "1";
     btn.textContent   = loading ? "Please wait…" : btn.dataset.label;
   }
 
-  /* ---- Store original button labels ---- */
   document.querySelectorAll(".primary-btn").forEach(btn => {
     btn.dataset.label = btn.textContent;
   });
-
-  /* ============================================================
-     REGISTER
-  ============================================================ */
 
   registerForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -143,10 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
       setLoading(btn, false);
     }
   });
-
-  /* ============================================================
-     LOGIN
-  ============================================================ */
 
   loginForm?.addEventListener("submit", async (e) => {
     e.preventDefault();

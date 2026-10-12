@@ -1,7 +1,3 @@
-/* ==========================================
-   EMAIL SERVICE
-========================================== */
-
 const nodemailer = require("nodemailer");
 const logger = require("./logger");
 
@@ -15,15 +11,14 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-/* Send Verification Email */
 exports.sendVerificationEmail = async (user, token) => {
   try {
     const url = `${process.env.CLIENT_URL}/verify-email/${token}`;
 
     await transporter.sendMail({
-      from: `"MyTune" <${process.env.EMAIL_USER}>`,
+      from: `"BeatFlow" <${process.env.EMAIL_USER}>`,
       to: user.email,
-      subject: "Verify your MyTune account",
+      subject: "Verify your BeatFlow account",
       html: `
         <h2>Hello ${user.username}</h2>
         <p>Please verify your email by clicking below:</p>
@@ -37,13 +32,12 @@ exports.sendVerificationEmail = async (user, token) => {
   }
 };
 
-/* Send Password Reset Email */
 exports.sendPasswordResetEmail = async (user, token) => {
   try {
     const url = `${process.env.CLIENT_URL}/reset-password/${token}`;
 
     await transporter.sendMail({
-      from: `"MyTune" <${process.env.EMAIL_USER}>`,
+      from: `"BeatFlow" <${process.env.EMAIL_USER}>`,
       to: user.email,
       subject: "Reset Your Password",
       html: `
@@ -59,11 +53,10 @@ exports.sendPasswordResetEmail = async (user, token) => {
   }
 };
 
-/* Friend Request Notification */
 exports.sendFriendRequestNotification = async (sender, recipient) => {
   try {
     await transporter.sendMail({
-      from: `"MyTune" <${process.env.EMAIL_USER}>`,
+      from: `"BeatFlow" <${process.env.EMAIL_USER}>`,
       to: recipient.email,
       subject: "New Friend Request",
       html: `

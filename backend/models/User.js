@@ -103,16 +103,8 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-/* ==========================================
-   INDEXES
-========================================== */
-
 userSchema.index({ username: 1 });
 userSchema.index({ email: 1 });
-
-/* ==========================================
-   PASSWORD HASHING
-========================================== */
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
@@ -122,17 +114,9 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-/* ==========================================
-   PASSWORD COMPARISON METHOD
-========================================== */
-
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
-
-/* ==========================================
-   REMOVE SENSITIVE DATA
-========================================== */
 
 userSchema.methods.toJSON = function () {
   const user = this.toObject();

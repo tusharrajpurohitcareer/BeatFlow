@@ -1,12 +1,4 @@
-/* ==========================================
-   MYTUNE VALIDATION MIDDLEWARE
-========================================== */
-
 const { body, validationResult } = require("express-validator");
-
-/* ==========================================
-   GENERAL VALIDATION WRAPPER
-========================================== */
 
 exports.validate = (validations) => {
   return async (req, res, next) => {
@@ -29,10 +21,6 @@ exports.validate = (validations) => {
   };
 };
 
-/* ==========================================
-   REGISTER VALIDATION
-========================================== */
-
 exports.validateRegistration = exports.validate([
   body("username")
     .trim()
@@ -54,11 +42,6 @@ exports.validateRegistration = exports.validate([
     .withMessage("Password must contain at least one number")
 ]);
 
-
-/* ==========================================
-   LOGIN VALIDATION
-========================================== */
-
 exports.validateLogin = exports.validate([
   body("email")
     .isEmail()
@@ -68,11 +51,6 @@ exports.validateLogin = exports.validate([
     .notEmpty()
     .withMessage("Password is required")
 ]);
-
-
-/* ==========================================
-   PLAYLIST VALIDATION
-========================================== */
 
 exports.validatePlaylist = exports.validate([
   body("name")
@@ -90,11 +68,6 @@ exports.validatePlaylist = exports.validate([
     .isIn(["public", "friends-only", "private"])
     .withMessage("Invalid privacy setting")
 ]);
-
-
-/* ==========================================
-   SONG UPLOAD VALIDATION
-========================================== */
 
 exports.validateSongUpload = exports.validate([
   body("title")

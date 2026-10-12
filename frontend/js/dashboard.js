@@ -1,17 +1,8 @@
-/* ============================================================
-   MYTUNE DASHBOARD CONTROLLER
-   Handles navigation, data loading, UI interactions
-============================================================ */
-
 const Dashboard = (() => {
-
-  /* ============================================================
-     STATE
-  ============================================================ */
 
   let currentUser    = null;
   let allPlaylists   = [];
-  let currentSongs   = [];   // songs currently visible (for context menu)
+  let currentSongs   = [];   
   let contextSong    = null;
   let currentPlaylistId = null;
 
@@ -25,12 +16,8 @@ const Dashboard = (() => {
     { id: "motivated", label: "Motivated", emoji: "💪", cls: "motivated"},
   ];
 
-  /* ============================================================
-     INIT
-  ============================================================ */
-
   async function init() {
-    // Guard – require login
+
     if (!API.getToken()) { window.location.href = "index.html"; return; }
 
     try {
@@ -61,20 +48,12 @@ const Dashboard = (() => {
     navigateTo("home");
   }
 
-  /* ============================================================
-     GREETING
-  ============================================================ */
-
   function _setGreeting() {
     const h = new Date().getHours();
     const greet = h < 12 ? "Good Morning" : h < 18 ? "Good Afternoon" : "Good Evening";
     const el = document.getElementById("greetingText");
     if (el) el.textContent = `${greet}, ${currentUser?.username || ""}`;
   }
-
-  /* ============================================================
-     USER INFO IN TOPBAR
-  ============================================================ */
 
   function _renderUserInfo() {
     if (!currentUser) return;
@@ -83,10 +62,6 @@ const Dashboard = (() => {
     if (name)   name.textContent   = currentUser.username || "User";
     if (avatar) avatar.textContent = (currentUser.username || "U")[0].toUpperCase();
   }
-
-  /* ============================================================
-     NAVIGATION
-  ============================================================ */
 
   function _bindNav() {
     document.querySelectorAll(".nav-item[data-page]").forEach(item => {
@@ -104,7 +79,6 @@ const Dashboard = (() => {
       window.location.href = "index.html";
     });
 
-    // Profile dropdown toggle
     document.getElementById("userMenuBtn")?.addEventListener("click", e => {
       e.stopPropagation();
       document.getElementById("profileDropdown")?.classList.toggle("open");
@@ -115,7 +89,7 @@ const Dashboard = (() => {
   }
 
   function navigateTo(page) {
-    // Hide all pages
+
     document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
     document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
 
@@ -125,7 +99,6 @@ const Dashboard = (() => {
     const navItem = document.querySelector(`.nav-item[data-page="${page}"]`);
     if (navItem) navItem.classList.add("active");
 
-    // Page-specific loaders
     if (page === "friends")       loadFriends();
     if (page === "listen-together") loadSessions();
     if (page === "library")       renderLibrary();
@@ -133,10 +106,6 @@ const Dashboard = (() => {
     if (page === "liked")         loadLikedSongs().then(renderLikedSongs);
     if (page === "search")        document.getElementById("searchInput")?.focus();
   }
-
-  /* ============================================================
-     SEARCH
-  ============================================================ */
 
   function _bindSearch() {
     const input = document.getElementById("searchInput");
@@ -295,10 +264,6 @@ const Dashboard = (() => {
     }
   }
 
-  /* ============================================================
-     PLAYLISTS
-  ============================================================ */
-
   async function loadPlaylists() {
     try {
       const data = await API.playlists.mine();
@@ -306,7 +271,7 @@ const Dashboard = (() => {
       _renderSidebarPlaylists();
       _renderPlaylistsGrid("playlistsGrid");
       _renderPlaylistsGrid("libraryPlaylistsGrid");
-    } catch { /* not logged in or no playlists */ }
+    } catch {  }
   }
 
   function _renderSidebarPlaylists() {
@@ -434,10 +399,6 @@ const Dashboard = (() => {
     }
   }
 
-  /* ============================================================
-     LIKED SONGS
-  ============================================================ */
-
   let likedSongsList = [];
 
   async function loadLikedSongs() {
@@ -447,7 +408,7 @@ const Dashboard = (() => {
       const ids = likedSongsList.map(s => String(s._id || s));
       player.likedSongs = new Set(ids);
       player._saveLiked();
-    } catch { /* ignore */ }
+    } catch {  }
   }
 
   function renderLikedSongs() {
@@ -503,7 +464,6 @@ const Dashboard = (() => {
     if (plCount) plCount.textContent = allPlaylists.length;
     if (frCount) frCount.textContent = currentUser.friends?.length || 0;
 
-    // Public playlists
     const grid = document.getElementById("profilePlaylists");
     if (grid) {
       const pub = allPlaylists.filter(p => p.visibility === "public");
@@ -816,10 +776,6 @@ const Dashboard = (() => {
     });
   }
 
-  /* ============================================================
-     PANEL TABS (Queue / Friends)
-  ============================================================ */
-
   function _bindPanelTabs() {
     document.querySelectorAll(".panel-tab").forEach(tab => {
       tab.addEventListener("click", () => {
@@ -844,7 +800,7 @@ const Dashboard = (() => {
       if (isOpen) {
         panel.style.display = "flex";
         shell.classList.add("panel-open");
-        // Switch to correct tab
+
         document.querySelectorAll(".panel-tab").forEach(t => t.classList.remove("active"));
         document.querySelectorAll(".panel-section").forEach(s => s.classList.remove("active"));
         const tabEl = document.querySelector(`.panel-tab[data-panel="${tab}"]`);
@@ -862,7 +818,7 @@ const Dashboard = (() => {
   }
 
   function _bindPlayerHeart() {
-    // Handled by player.js – just ensure like state sync
+
     const btn = document.getElementById("playerHeartBtn");
     if (btn) {
       btn.addEventListener("click", () => {
@@ -870,10 +826,6 @@ const Dashboard = (() => {
       });
     }
   }
-
-  /* ============================================================
-     SONG CARD & ROW HELPERS
-  ============================================================ */
 
   function _songCard(song) {
     const id = song.id || song._id;
@@ -957,10 +909,6 @@ const Dashboard = (() => {
       });
     });
   }
-
-  /* ============================================================
-     HELPERS
-  ============================================================ */
 
   function _toPlayerSong(s) {
     return {

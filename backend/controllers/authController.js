@@ -1,13 +1,5 @@
-/* ==========================================
-   MYTUNE AUTH CONTROLLER (NO EMAIL VERIFY)
-========================================== */
-
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
-
-/* ==========================================
-   HELPER: GENERATE TOKENS
-========================================== */
 
 const generateAccessToken = (userId) => {
   return jwt.sign(
@@ -25,15 +17,10 @@ const generateRefreshToken = (userId) => {
   );
 };
 
-/* ==========================================
-   1️⃣ REGISTER
-========================================== */
-
 exports.register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
 
-    // Check if user already exists
     const existingUser = await User.findOne({
       $or: [{ email }, { username }]
     });
@@ -45,12 +32,11 @@ exports.register = async (req, res, next) => {
       });
     }
 
-    // Create user (NO verification token)
     const user = await User.create({
       username,
       email,
       password,
-      emailVerified: true // auto-verified
+      emailVerified: true 
     });
 
     res.status(201).json({
@@ -62,11 +48,6 @@ exports.register = async (req, res, next) => {
     next(error);
   }
 };
-
-
-/* ==========================================
-   2️⃣ LOGIN
-========================================== */
 
 exports.login = async (req, res, next) => {
   try {
@@ -111,11 +92,6 @@ exports.login = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   3️⃣ FORGOT PASSWORD
-========================================== */
-
 exports.forgotPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
@@ -138,11 +114,6 @@ exports.forgotPassword = async (req, res, next) => {
     next(error);
   }
 };
-
-
-/* ==========================================
-   4️⃣ REFRESH TOKEN
-========================================== */
 
 exports.refreshToken = async (req, res) => {
   try {

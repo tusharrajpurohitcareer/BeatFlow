@@ -5,8 +5,6 @@ const musicController = require("../controllers/musicController");
 const { authenticateToken, optionalAuth } = require("../middleware/auth");
 const { searchLimiter } = require("../middleware/rateLimiter");
 
-/* MUSIC ROUTES */
-
 router.get("/search", searchLimiter, optionalAuth, musicController.searchSongs);
 
 router.get("/trending", musicController.getTrendingSongs);

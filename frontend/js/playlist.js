@@ -1,8 +1,4 @@
-/* ==========================================
-   MYTUNE PLAYLIST MANAGEMENT
-========================================== */
-
-class MyTunePlaylist {
+class BeatFlowPlaylist {
     constructor() {
         this.mainContent = document.getElementById("mainContent");
         this.currentPlaylist = null;
@@ -14,21 +10,13 @@ class MyTunePlaylist {
         this.attachGlobalListeners();
     }
 
-    /* ========================================
-       UTILITIES
-    ======================================== */
-
     showMessage(message, type = "success") {
-        alert(message); // Replace with toast later
+        alert(message); 
     }
 
     showError(message) {
         alert("Error: " + message);
     }
-
-    /* ========================================
-       CREATE PLAYLIST
-    ======================================== */
 
     openCreateModal() {
         const modal = document.createElement("div");
@@ -90,10 +78,6 @@ class MyTunePlaylist {
         }
     }
 
-    /* ========================================
-       EDIT PLAYLIST
-    ======================================== */
-
     async editPlaylist(id, updatedData) {
         try {
             const res = await fetch(`/api/playlists/${id}`, {
@@ -112,10 +96,6 @@ class MyTunePlaylist {
         }
     }
 
-    /* ========================================
-       DELETE PLAYLIST
-    ======================================== */
-
     async deletePlaylist(id) {
         if (!confirm("Are you sure you want to delete this playlist?")) return;
 
@@ -133,10 +113,6 @@ class MyTunePlaylist {
             this.showError(err.message);
         }
     }
-
-    /* ========================================
-       LOAD PLAYLIST DETAILS
-    ======================================== */
 
     async loadPlaylist(id) {
         try {
@@ -198,10 +174,6 @@ class MyTunePlaylist {
             .addEventListener("click", () => this.playEntirePlaylist());
     }
 
-    /* ========================================
-       ADD SONG TO PLAYLIST
-    ======================================== */
-
     async addSongToPlaylist(playlistId, songId) {
         try {
             const res = await fetch(`/api/playlists/${playlistId}/songs`, {
@@ -219,10 +191,6 @@ class MyTunePlaylist {
             this.showError(err.message);
         }
     }
-
-    /* ========================================
-       REMOVE SONG
-    ======================================== */
 
     async removeSongFromPlaylist(playlistId, songId) {
         if (!confirm("Remove this song?")) return;
@@ -242,10 +210,6 @@ class MyTunePlaylist {
             this.showError(err.message);
         }
     }
-
-    /* ========================================
-       DRAG & DROP REORDER
-    ======================================== */
 
     attachDragEvents(element) {
         element.addEventListener("dragstart", (e) => {
@@ -288,22 +252,14 @@ class MyTunePlaylist {
         }
     }
 
-    /* ========================================
-       PLAY ENTIRE PLAYLIST
-    ======================================== */
-
     playEntirePlaylist() {
-        if (!window.myTunePlayer) return;
+        if (!window.beatFlowPlayer) return;
 
-        window.myTunePlayer.queue = [...this.currentPlaylist.songs];
-        window.myTunePlayer.currentIndex = 0;
-        window.myTunePlayer.loadSong(0);
-        window.myTunePlayer.play();
+        window.beatFlowPlayer.queue = [...this.currentPlaylist.songs];
+        window.beatFlowPlayer.currentIndex = 0;
+        window.beatFlowPlayer.loadSong(0);
+        window.beatFlowPlayer.play();
     }
-
-    /* ========================================
-       LOAD USER PLAYLISTS
-    ======================================== */
 
     async loadUserPlaylists() {
         try {
@@ -318,19 +274,11 @@ class MyTunePlaylist {
         }
     }
 
-    /* ========================================
-       FORMAT TIME
-    ======================================== */
-
     formatTime(seconds) {
         const mins = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
         return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
     }
-
-    /* ========================================
-       GLOBAL LISTENERS
-    ======================================== */
 
     attachGlobalListeners() {
         document.addEventListener("click", (e) => {
@@ -341,10 +289,6 @@ class MyTunePlaylist {
     }
 }
 
-/* ==========================================
-   INITIALIZE
-========================================== */
-
 document.addEventListener("DOMContentLoaded", () => {
-    window.myTunePlaylist = new MyTunePlaylist();
+    window.beatFlowPlaylist = new BeatFlowPlaylist();
 });

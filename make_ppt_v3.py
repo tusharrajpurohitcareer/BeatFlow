@@ -1,5 +1,5 @@
 """
-MyTunes – Final Presentation (v3)
+BeatFlow – Final Presentation (v3)
 Slide order:
   1  Title
   2  Introduction          ← NEW
@@ -21,11 +21,10 @@ from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN
 import os
 
-# ── Colours ───────────────────────────────────────────────────────────────────
 BG_DARK  = RGBColor(0x12, 0x12, 0x12)
 BG_CARD  = RGBColor(0x1E, 0x1E, 0x2E)
-ACCENT   = RGBColor(0x1D, 0xB9, 0x54)   # green
-ACCENT2  = RGBColor(0x9B, 0x59, 0xB6)   # purple
+ACCENT   = RGBColor(0x1D, 0xB9, 0x54)
+ACCENT2  = RGBColor(0x9B, 0x59, 0xB6)
 WHITE    = RGBColor(0xFF, 0xFF, 0xFF)
 GREY     = RGBColor(0xB3, 0xB3, 0xB3)
 YELLOW   = RGBColor(0xF3, 0xC6, 0x23)
@@ -33,15 +32,13 @@ TEAL     = RGBColor(0x1A, 0xBC, 0x9C)
 RED      = RGBColor(0xE5, 0x3E, 0x3E)
 BLUE     = RGBColor(0x27, 0x6D, 0xC8)
 
-SS  = r"C:\Users\rkvlu\Desktop\MyTunes\screenshots"
-OUT = r"C:\Users\rkvlu\Desktop\MyTunes\MyTunes_Presentation_Final.pptx"
+SS  = r"C:\Users\rkvlu\Desktop\BeatFlow\screenshots"
+OUT = r"C:\Users\rkvlu\Desktop\BeatFlow\BeatFlow_Presentation_Final.pptx"
 
 prs = Presentation()
 prs.slide_width  = Inches(13.33)
 prs.slide_height = Inches(7.5)
 blank = prs.slide_layouts[6]
-
-# ── Helpers ───────────────────────────────────────────────────────────────────
 
 def bg(slide, colour=BG_DARK):
     f = slide.background.fill
@@ -128,15 +125,11 @@ def screenshot_slide(title, subtitle, img_path, points, accent_col=ACCENT2):
         txt(s, bp, EL+0.4, y+0.33, EW-0.6, 0.42, size=10, colour=GREY)
         y += 0.82
 
-
-# =============================================================================
-# SLIDE 1 – Title
-# =============================================================================
 s1 = prs.slides.add_slide(blank); bg(s1)
 rect(s1, 0, 4.85, 13.33, 0.07, fill=ACCENT)
 rect(s1, 0, 4.92, 13.33, 0.04, fill=ACCENT2)
 txt(s1, "🎵", 9.6, 0.5, 3.2, 3.2, size=110, align=PP_ALIGN.CENTER)
-txt(s1, "MyTunes",  0.6, 0.9, 8.8, 1.2, size=66, bold=True, colour=ACCENT)
+txt(s1, "BeatFlow",  0.6, 0.9, 8.8, 1.2, size=66, bold=True, colour=ACCENT)
 txt(s1, "Ad-Free Social Music Streaming Platform",
     0.6, 2.1, 9, 0.55, size=20, colour=GREY)
 rect(s1, 0.6, 2.82, 5.2, 0.05, fill=ACCENT2)
@@ -155,14 +148,9 @@ for i, (role, name) in enumerate([
 txt(s1, "Department of Computer Science  |  Academic Year 2024-25",
     0.6, 7.15, 12, 0.28, size=10, colour=GREY)
 
-
-# =============================================================================
-# SLIDE 2 – Introduction
-# =============================================================================
 s2 = prs.slides.add_slide(blank); bg(s2)
-header(s2, "Introduction", "What is MyTunes?", accent=ACCENT)
+header(s2, "Introduction", "What is BeatFlow?", accent=ACCENT)
 
-# Left column – what it is
 rect(s2, 0.35, 1.42, 6.2, 5.82, fill=BG_CARD,
      line=ACCENT, lw=0.8)
 txt(s2, "About the Project", 0.6, 1.55, 5.8, 0.38,
@@ -170,12 +158,12 @@ txt(s2, "About the Project", 0.6, 1.55, 5.8, 0.38,
 rect(s2, 0.55, 1.96, 5.7, 0.03, fill=ACCENT)
 
 intro_points = [
-    ("What is MyTunes?",
+    ("What is BeatFlow?",
      "A free, ad-free music streaming web app that lets users listen to music, "
      "build playlists, and connect with friends – all in one place."),
     ("Why we built it?",
      "Popular platforms like Spotify and Apple Music charge for ad-free listening "
-     "and lock social features behind premium plans. MyTunes gives everyone these "
+     "and lock social features behind premium plans. BeatFlow gives everyone these "
      "features for free."),
     ("Who is it for?",
      "Music lovers who want a free, social streaming experience without ads "
@@ -191,7 +179,6 @@ for btitle, bbody in intro_points:
     txt(s2, bbody,  0.75, y+0.3, 5.5, 0.55, size=10, colour=GREY)
     y += 0.95
 
-# Right column – key highlights
 rect(s2, 6.75, 1.42, 6.25, 5.82, fill=BG_CARD,
      line=ACCENT2, lw=0.8)
 txt(s2, "Key Highlights", 7.0, 1.55, 5.8, 0.38,
@@ -215,14 +202,9 @@ for col, htitle, hbody in highlights:
     txt(s2, hbody,  7.12, y+0.38, 5.3, 0.28, size=10, colour=GREY)
     y += 0.87
 
-
-# =============================================================================
-# SLIDE 3 – Problem Statement
-# =============================================================================
 s3 = prs.slides.add_slide(blank); bg(s3)
-header(s3, "Problem Statement", "The gap MyTunes fills", accent=RED)
+header(s3, "Problem Statement", "The gap BeatFlow fills", accent=RED)
 
-# Central problem statement box
 rect(s3, 0.5, 1.42, 12.35, 1.0, fill=RGBColor(0x2A,0x0A,0x0A),
      line=RED, lw=1.5)
 txt(s3,
@@ -263,14 +245,9 @@ for idx, (col, ptitle, pbody) in enumerate(problems):
     txt(s3, ptitle, l+0.18, t+0.1, cw-0.25, 0.35, size=11, bold=True, colour=col)
     txt(s3, pbody,  l+0.18, t+0.5, cw-0.25, 0.92, size=10, colour=GREY)
 
-
-# =============================================================================
-# SLIDE 4 – Objectives
-# =============================================================================
 s4 = prs.slides.add_slide(blank); bg(s4)
-header(s4, "Objectives", "What MyTunes aims to achieve", accent=YELLOW)
+header(s4, "Objectives", "What BeatFlow aims to achieve", accent=YELLOW)
 
-# Left: main objectives
 rect(s4, 0.35, 1.42, 6.2, 5.82, fill=BG_CARD, line=YELLOW, lw=0.8)
 txt(s4, "Primary Objectives", 0.58, 1.55, 5.8, 0.38,
     size=14, bold=True, colour=YELLOW)
@@ -295,7 +272,6 @@ for otitle, obody in obj_main:
     txt(s4, obody,  0.75, y+0.3, 5.5, 0.52, size=10, colour=GREY)
     y += 0.9
 
-# Right: secondary objectives
 rect(s4, 6.75, 1.42, 6.25, 5.82, fill=BG_CARD, line=ACCENT, lw=0.8)
 txt(s4, "Secondary Objectives", 7.0, 1.55, 5.8, 0.38,
     size=14, bold=True, colour=ACCENT)
@@ -322,14 +298,9 @@ for otitle, obody in obj_sec:
     txt(s4, obody,  7.15, y+0.3, 5.5, 0.52, size=10, colour=GREY)
     y += 0.9
 
-
-# =============================================================================
-# SLIDE 5 – Scope of the Project
-# =============================================================================
 s5 = prs.slides.add_slide(blank); bg(s5)
 header(s5, "Scope of the Project", "What is included and what is not", accent=TEAL)
 
-# In Scope (left)
 rect(s5, 0.35, 1.42, 6.0, 5.82, fill=BG_CARD,
      line=ACCENT, lw=0.8)
 txt(s5, "✅  IN SCOPE", 0.6, 1.52, 5.6, 0.38,
@@ -356,7 +327,6 @@ for item in in_scope:
     txt(s5, item, 0.76, y, 5.35, 0.32, size=10, colour=GREY)
     y += 0.36
 
-# Out of Scope (right)
 rect(s5, 6.65, 1.42, 6.3, 5.82, fill=BG_CARD,
      line=RED, lw=0.8)
 txt(s5, "❌  OUT OF SCOPE", 6.9, 1.52, 5.8, 0.38,
@@ -380,12 +350,8 @@ for otitle, obody in out_scope:
     txt(s5, obody,  7.06, y+0.3, 5.65, 0.34, size=10, colour=GREY)
     y += 0.72
 
-
-# =============================================================================
-# SLIDE 6 – Technologies Used
-# =============================================================================
 s6 = prs.slides.add_slide(blank); bg(s6)
-header(s6, "Technologies Used", "The tech stack that powers MyTunes", accent=BLUE)
+header(s6, "Technologies Used", "The tech stack that powers BeatFlow", accent=BLUE)
 
 tech_sections = [
     ("Frontend", ACCENT2, [
@@ -429,7 +395,6 @@ for col_idx, (sec_title, col, items) in enumerate(tech_sections):
         txt(s6, desc, lx+0.28, iy+0.26, cw-0.38, 0.35, size=9, colour=GREY)
         iy += 0.65
 
-# Why these choices – bottom strip
 rect(s6, 0.3, 5.0, 12.73, 2.28, fill=BG_CARD,
      line=RGBColor(0x2A,0x2A,0x3A), lw=0.5)
 txt(s6, "Why This Stack?", 0.55, 5.08, 12, 0.35, size=13, bold=True, colour=BLUE)
@@ -446,15 +411,11 @@ for rtitle, rbody in reasons:
     txt(s6, rbody,  rx+0.14, 5.74, 2.8, 0.42, size=9, colour=GREY)
     rx += 3.15
 
-
-# =============================================================================
-# SLIDE 7 – Project Overview (existing content)
-# =============================================================================
 s7 = prs.slides.add_slide(blank); bg(s7)
 header(s7, "Project Overview", "Feature summary", accent=ACCENT2)
 
 txt(s7,
-    "MyTunes is a full-stack, ad-free social music streaming web application built with "
+    "BeatFlow is a full-stack, ad-free social music streaming web application built with "
     "Node.js/Express (backend) and vanilla HTML/CSS/JS (frontend). It delivers a Spotify-like "
     "experience while adding social features – friends, playlist sharing, mood-based discovery, "
     "and real-time synchronized group listening via Socket.io.",
@@ -485,10 +446,6 @@ for label, col in [("Node.js",ACCENT),("Express",ACCENT2),("MongoDB",TEAL),
     pill(s7, x, 7.12, max(1.3, len(label)*0.12), 0.27, label, col, sz=9)
     x += max(1.3, len(label)*0.12) + 0.1
 
-
-# =============================================================================
-# SLIDES 8–12 – Screenshot slides (Login, Register, Dashboard, etc.)
-# =============================================================================
 screenshot_slide(
     "Page 1 – Login & Register",
     "localhost:5500/index.html  |  Entry point",
@@ -609,10 +566,6 @@ screenshot_slide(
      ("Instant Refresh","Playlists grid and sidebar update without a full page reload."),
     ], accent_col=ACCENT2)
 
-
-# =============================================================================
-# SLIDE – System Architecture
-# =============================================================================
 sa = prs.slides.add_slide(blank); bg(sa)
 header(sa, "System Architecture", "How all layers connect", accent=BLUE)
 
@@ -647,22 +600,16 @@ for i,(btitle,bbody,bcol) in enumerate(badges):
     txt(sa, btitle, bl+0.15, 6.6,  3.85, 0.28, size=11, bold=True, colour=bcol)
     txt(sa, bbody,  bl+0.15, 6.88, 3.85, 0.28, size=9, colour=GREY)
 
-
-# =============================================================================
-# SLIDE – Outcomes / Results
-# =============================================================================
 or_ = prs.slides.add_slide(blank); bg(or_)
 header(or_, "Outcomes & Results", "What we achieved by the end of this semester", accent=ACCENT)
 
-# Top summary bar
 rect(or_, 0.35, 1.42, 12.63, 0.82, fill=RGBColor(0x0A,0x2A,0x0A),
      line=ACCENT, lw=1.2)
 txt(or_,
-    "MyTunes was successfully built and deployed as a fully working full-stack web application. "
+    "BeatFlow was successfully built and deployed as a fully working full-stack web application. "
     "All planned features for this semester were implemented, tested, and are functional.",
     0.6, 1.52, 12.1, 0.65, size=12, colour=WHITE)
 
-# Stat boxes
 stats = [
     ("8+",  "Major Features\nDelivered", ACCENT),
     ("20+", "REST API\nEndpoints", ACCENT2),
@@ -677,7 +624,6 @@ for i,(num, label, col) in enumerate(stats):
     txt(or_, label, bx, 3.08, 3.0, 0.45,
         size=10, colour=GREY, align=PP_ALIGN.CENTER)
 
-# Outcome bullets (2 columns)
 outcomes_left = [
     ("Secure Authentication Working",
      "Users can register, login, and stay logged in with JWT + refresh tokens. Passwords are bcrypt-hashed."),
@@ -708,15 +654,11 @@ for (lt, lb), (rt, rb) in zip(outcomes_left, outcomes_right):
     txt(or_, rb, 6.9, y+0.3, 6.0, 0.38, size=10, colour=GREY)
     y += 0.82
 
-
-# =============================================================================
-# SLIDE – Future Work / Next Semester Plan
-# =============================================================================
 fw = prs.slides.add_slide(blank); bg(fw)
 header(fw, "Future Work", "Next Semester Implementation Plan", accent=ACCENT2)
 
 txt(fw,
-    "MyTunes has a strong foundation. In the next semester, we plan to expand it with advanced features "
+    "BeatFlow has a strong foundation. In the next semester, we plan to expand it with advanced features "
     "that make it even more powerful, social, and accessible to users on all devices.",
     0.4, 1.38, 12.5, 0.72, size=12, colour=GREY)
 
@@ -755,29 +697,24 @@ for idx,(col, ftitle, phase, fbody) in enumerate(future_items):
     rect(fw, l, t, cw3, ch3, fill=BG_CARD, line=col, lw=1.0)
     rect(fw, l, t, cw3, 0.38, fill=col)
     txt(fw, ftitle, l+0.12, t+0.06, cw3-0.2, 0.28, size=11, bold=True, colour=WHITE)
-    # Phase badge
+
     rect(fw, l+cw3-1.15, t+0.42, 1.1, 0.25, fill=RGBColor(0x10,0x10,0x20))
     txt(fw, phase, l+cw3-1.15, t+0.44, 1.1, 0.22,
         size=8, colour=col, align=PP_ALIGN.CENTER)
     txt(fw, fbody, l+0.12, t+0.72, cw3-0.22, 0.85, size=10, colour=GREY)
 
-# Bottom note
 rect(fw, 0.3, 7.05, 12.73, 0.36, fill=BG_CARD)
 txt(fw,
     "Phase 1 features will be completed by mid-next semester.  "
     "Phase 2 features will be research + prototyped by end of next semester.",
     0.55, 7.1, 12.2, 0.28, size=10, colour=GREY)
 
-
-# =============================================================================
-# SLIDE – Thank You
-# =============================================================================
 ty_ = prs.slides.add_slide(blank); bg(ty_)
 rect(ty_, 0, 6.38, 13.33, 1.12, fill=BG_CARD)
 rect(ty_, 0, 6.36, 13.33, 0.06, fill=ACCENT)
 txt(ty_, "🎵", 9.5, 0.8, 3.5, 3.5, size=110, align=PP_ALIGN.CENTER)
 txt(ty_, "Thank You", 0.6, 1.1, 8.5, 1.2, size=64, bold=True, colour=WHITE)
-txt(ty_, "MyTunes – Ad-Free Social Music Streaming Platform",
+txt(ty_, "BeatFlow – Ad-Free Social Music Streaming Platform",
     0.6, 2.28, 8.8, 0.55, size=17, colour=ACCENT)
 rect(ty_, 0.6, 3.0, 4.5, 0.05, fill=ACCENT2)
 
@@ -795,10 +732,6 @@ for i, line in enumerate(achievements):
 txt(ty_, "Department of Computer Science  |  Academic Year 2024-25",
     0.6, 6.55, 12, 0.28, size=10, colour=GREY)
 
-
-# =============================================================================
-# Save
-# =============================================================================
 prs.save(OUT)
 print(f"Saved: {OUT}")
 print(f"Total slides: {len(prs.slides)}")

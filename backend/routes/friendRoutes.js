@@ -4,8 +4,6 @@ const router = express.Router();
 const friendsController = require("../controllers/friendsController");
 const { authenticateToken } = require("../middleware/auth");
 
-/* FRIEND ROUTES (ALL PROTECTED) */
-
 router.use(authenticateToken);
 
 router.get("/", friendsController.getFriends);

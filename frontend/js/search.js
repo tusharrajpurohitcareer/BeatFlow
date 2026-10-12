@@ -1,15 +1,11 @@
-/* ==========================================
-   MYTUNE SEARCH & BROWSE SYSTEM
-========================================== */
-
-class MyTuneSearch {
+class BeatFlowSearch {
     constructor() {
         this.searchInput = document.getElementById("searchInput");
         this.mainContent = document.getElementById("mainContent");
 
         this.currentPage = 1;
         this.limit = 12;
-        this.currentView = "grid"; // grid | list
+        this.currentView = "grid"; 
         this.currentSort = "name";
 
         this.debounceTimer = null;
@@ -17,18 +13,10 @@ class MyTuneSearch {
         this.init();
     }
 
-    /* ========================================
-       INITIALIZE
-    ======================================== */
-
     init() {
         this.attachSearchListener();
         this.loadSongs();
     }
-
-    /* ========================================
-       SEARCH FUNCTIONALITY
-    ======================================== */
 
     attachSearchListener() {
         if (!this.searchInput) return;
@@ -103,10 +91,6 @@ class MyTuneSearch {
         }
     }
 
-    /* ========================================
-       BROWSE SONGS
-    ======================================== */
-
     async loadSongs(reset = true) {
         if (reset) {
             this.currentPage = 1;
@@ -133,7 +117,7 @@ class MyTuneSearch {
 
     renderSongList(songs, reset) {
         if (reset) {
-            this.mainContent.innerHTML = `
+            this.mainContent.innerHTML = ` 
                 <div class="section-header">
                     <h2>Browse Songs</h2>
                     ${this.createControls()}
@@ -150,10 +134,6 @@ class MyTuneSearch {
 
         this.setupInfiniteScroll();
     }
-
-    /* ========================================
-       PLAYLISTS
-    ======================================== */
 
     async loadPlaylists() {
         this.showLoading();
@@ -182,10 +162,6 @@ class MyTuneSearch {
         }
     }
 
-    /* ========================================
-       CARD CREATION
-    ======================================== */
-
     createSongCard(song) {
         const card = document.createElement("div");
         card.className = "card";
@@ -196,12 +172,12 @@ class MyTuneSearch {
         `;
 
         card.addEventListener("click", () => {
-            if (window.myTunePlayer) {
-                window.myTunePlayer.addToQueue(song);
-                window.myTunePlayer.loadSong(
-                    window.myTunePlayer.queue.length - 1
+            if (window.beatFlowPlayer) {
+                window.beatFlowPlayer.addToQueue(song);
+                window.beatFlowPlayer.loadSong(
+                    window.beatFlowPlayer.queue.length - 1
                 );
-                window.myTunePlayer.play();
+                window.beatFlowPlayer.play();
             }
         });
 
@@ -228,10 +204,6 @@ class MyTuneSearch {
         `;
         return card;
     }
-
-    /* ========================================
-       CONTROLS (SORT & VIEW)
-    ======================================== */
 
     createControls() {
         return `
@@ -267,10 +239,6 @@ class MyTuneSearch {
         });
     }
 
-    /* ========================================
-       INFINITE SCROLL
-    ======================================== */
-
     setupInfiniteScroll() {
         window.onscroll = () => {
             if (
@@ -282,10 +250,6 @@ class MyTuneSearch {
             }
         };
     }
-
-    /* ========================================
-       UI STATES
-    ======================================== */
 
     showLoading() {
         this.mainContent.innerHTML = "<p>Loading...</p>";
@@ -300,10 +264,6 @@ class MyTuneSearch {
     }
 }
 
-/* ==========================================
-   INITIALIZE SEARCH
-========================================== */
-
 document.addEventListener("DOMContentLoaded", () => {
-    window.myTuneSearch = new MyTuneSearch();
+    window.beatFlowSearch = new BeatFlowSearch();
 });

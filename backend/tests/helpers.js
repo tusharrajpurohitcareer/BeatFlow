@@ -5,10 +5,6 @@ const { User } = require("../models");
 
 let mongoServer;
 
-/* ==========================================
-   SETUP TEST DATABASE
-========================================== */
-
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const uri = mongoServer.getUri();
@@ -27,10 +23,6 @@ afterAll(async () => {
   await mongoose.connection.close();
   await mongoServer.stop();
 });
-
-/* ==========================================
-   HELPER FUNCTIONS
-========================================== */
 
 const createTestUser = async () => {
   return await User.create({

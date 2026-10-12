@@ -1,21 +1,13 @@
-/* ==========================================
-   MYTUNE LISTEN TOGETHER SYSTEM
-========================================== */
-
-class MyTuneListenTogether {
+class BeatFlowListenTogether {
     constructor() {
         this.socket = null;
         this.sessionId = null;
         this.isHost = false;
         this.participants = [];
-        this.syncTolerance = 0.5; // 500ms
+        this.syncTolerance = 0.5; 
 
         this.init();
     }
-
-    /* ========================================
-       INITIALIZE SOCKET CONNECTION
-    ======================================== */
 
     init() {
         this.connectSocket();
@@ -37,7 +29,6 @@ class MyTuneListenTogether {
             console.warn("Disconnected. Attempting reconnect...");
         });
 
-        /* Session Events */
         this.socket.on("session:updateParticipants", (data) =>
             this.updateParticipants(data)
         );
@@ -72,10 +63,6 @@ class MyTuneListenTogether {
         });
     }
 
-    /* ========================================
-       CREATE SESSION
-    ======================================== */
-
     async createSession({ name, privacy }) {
         try {
             const res = await fetch("/api/sessions", {
@@ -97,10 +84,6 @@ class MyTuneListenTogether {
             alert(err.message);
         }
     }
-
-    /* ========================================
-       JOIN SESSION
-    ======================================== */
 
     async joinSession(sessionId) {
         try {
@@ -127,10 +110,6 @@ class MyTuneListenTogether {
         this.participants = [];
     }
 
-    /* ========================================
-       SYNCHRONIZATION LOGIC
-    ======================================== */
-
     broadcastPlayback(event, payload = {}) {
         if (!this.isHost) return;
 
@@ -144,7 +123,7 @@ class MyTuneListenTogether {
     syncPlay({ time }) {
         if (this.isHost) return;
 
-        const player = window.myTunePlayer;
+        const player = window.beatFlowPlayer;
         const drift = Math.abs(player.audio.currentTime - time);
 
         if (drift > this.syncTolerance) {
@@ -157,7 +136,7 @@ class MyTuneListenTogether {
     syncPause({ time }) {
         if (this.isHost) return;
 
-        const player = window.myTunePlayer;
+        const player = window.beatFlowPlayer;
         player.audio.currentTime = time;
         player.pause();
     }
@@ -165,24 +144,20 @@ class MyTuneListenTogether {
     syncSeek({ time }) {
         if (this.isHost) return;
 
-        window.myTunePlayer.audio.currentTime = time;
+        window.beatFlowPlayer.audio.currentTime = time;
     }
 
     syncSong({ index, time }) {
         if (this.isHost) return;
 
-        const player = window.myTunePlayer;
+        const player = window.beatFlowPlayer;
         player.loadSong(index);
         player.audio.currentTime = time;
         player.play();
     }
 
-    /* ========================================
-       HOST CONTROLS
-    ======================================== */
-
     attachHostControls() {
-        const player = window.myTunePlayer;
+        const player = window.beatFlowPlayer;
 
         player.audio.addEventListener("play", () => {
             this.broadcastPlayback("play", {
@@ -202,10 +177,6 @@ class MyTuneListenTogether {
             });
         });
     }
-
-    /* ========================================
-       PARTICIPANTS
-    ======================================== */
 
     updateParticipants(list) {
         this.participants = list;
@@ -230,10 +201,6 @@ class MyTuneListenTogether {
             container.appendChild(div);
         });
     }
-
-    /* ========================================
-       CHAT SYSTEM
-    ======================================== */
 
     sendChatMessage(text) {
         if (!this.sessionId) return;
@@ -262,10 +229,6 @@ class MyTuneListenTogether {
         container.appendChild(div);
     }
 
-    /* ========================================
-       HANDLE DISCONNECTIONS
-    ======================================== */
-
     handleDisconnect() {
         this.socket.on("reconnect", () => {
             if (this.sessionId) {
@@ -277,10 +240,6 @@ class MyTuneListenTogether {
             alert("Host disconnected. Transferring host...");
         });
     }
-
-    /* ========================================
-       UI EVENTS
-    ======================================== */
 
     attachUIEvents() {
         document.addEventListener("click", (e) => {
@@ -304,5 +263,5 @@ class MyTuneListenTogether {
 ========================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-    window.myTuneListenTogether = new MyTuneListenTogether();
+    window.beatFlowListenTogether = new BeatFlowListenTogether();
 });

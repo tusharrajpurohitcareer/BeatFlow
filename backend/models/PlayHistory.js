@@ -24,7 +24,7 @@ const playHistorySchema = new mongoose.Schema(
     },
 
     duration: {
-      type: Number, // seconds actually played
+      type: Number, 
       min: 0
     },
 
@@ -50,24 +50,13 @@ const playHistorySchema = new mongoose.Schema(
   }
 );
 
-/* ==========================================
-   INDEXES
-========================================== */
-
-// Compound index for fast user history queries
 playHistorySchema.index({ userId: 1, playedAt: -1 });
 
-// TTL INDEX - auto delete after 90 days
 playHistorySchema.index(
   { playedAt: 1 },
-  { expireAfterSeconds: 90 * 24 * 60 * 60 } // 90 days
+  { expireAfterSeconds: 90 * 24 * 60 * 60 } 
 );
 
-/* ==========================================
-   METHODS
-========================================== */
-
-// Determine if user completed song
 playHistorySchema.methods.isCompleted = function () {
   return this.completedPercentage >= 90;
 };

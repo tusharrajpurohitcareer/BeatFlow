@@ -1,17 +1,10 @@
-/* ==========================================
-   OFFLINE DOWNLOAD SYSTEM
-========================================== */
-
 class OfflineManager {
     constructor() {
-        this.dbName = "MyTuneOfflineDB";
+        this.dbName = "BeatFlowOfflineDB";
         this.storeName = "songs";
         this.initDB();
     }
 
-    /* ===============================
-       IndexedDB Setup
-    =============================== */
     initDB() {
         const request = indexedDB.open(this.dbName, 1);
 
@@ -30,9 +23,6 @@ class OfflineManager {
         };
     }
 
-    /* ===============================
-       Download Song
-    =============================== */
     async downloadSong(songId) {
         try {
             const tokenRes = await fetch(`/api/download/token/${songId}`, {
@@ -69,9 +59,6 @@ class OfflineManager {
         }
     }
 
-    /* ===============================
-       Save to IndexedDB
-    =============================== */
     saveSong(id, blob) {
         const transaction = this.db.transaction(this.storeName, "readwrite");
         const store = transaction.objectStore(this.storeName);
@@ -83,9 +70,6 @@ class OfflineManager {
         };
     }
 
-    /* ===============================
-       Get Offline Song
-    =============================== */
     getOfflineSong(id) {
         return new Promise((resolve, reject) => {
             const transaction = this.db.transaction(this.storeName, "readonly");
@@ -97,17 +81,11 @@ class OfflineManager {
         });
     }
 
-    /* ===============================
-       Progress UI
-    =============================== */
     updateProgressUI(songId, percent) {
         const el = document.getElementById(`download-${songId}`);
         if (el) el.innerText = `Downloading ${percent}%`;
     }
 
-    /* ===============================
-       Storage Info
-    =============================== */
     async getStorageUsage() {
         if (navigator.storage && navigator.storage.estimate) {
             const estimate = await navigator.storage.estimate();

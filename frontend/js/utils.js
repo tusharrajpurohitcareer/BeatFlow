@@ -1,12 +1,4 @@
-/* ==========================================
-   MYTUNE GLOBAL UTILITIES
-========================================== */
-
-const MyTuneUtils = (() => {
-
-    /* ========================================
-       TIME FORMATTING
-    ======================================== */
+const BeatFlowUtils = (() => {
 
     const formatTime = (seconds = 0) => {
         seconds = Math.floor(seconds);
@@ -90,10 +82,6 @@ const MyTuneUtils = (() => {
         }, 3000);
     };
 
-    /* ========================================
-       VALIDATION
-    ======================================== */
-
     const validateEmail = (email) =>
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -109,10 +97,6 @@ const MyTuneUtils = (() => {
     const validateUsername = (username) =>
         /^[a-zA-Z0-9_]{3,20}$/.test(username);
 
-    /* ========================================
-       DEBOUNCE
-    ======================================== */
-
     const debounce = (func, delay = 300) => {
         let timeout;
         return (...args) => {
@@ -120,10 +104,6 @@ const MyTuneUtils = (() => {
             timeout = setTimeout(() => func(...args), delay);
         };
     };
-
-    /* ========================================
-       LOCAL STORAGE HELPERS
-    ======================================== */
 
     const setItem = (key, value) => {
         localStorage.setItem(key, JSON.stringify(value));
@@ -137,10 +117,6 @@ const MyTuneUtils = (() => {
     const removeItem = (key) => {
         localStorage.removeItem(key);
     };
-
-    /* ========================================
-       DOM HELPERS
-    ======================================== */
 
     const createElement = (tag, classes = [], attributes = {}) => {
         const el = document.createElement(tag);
@@ -190,10 +166,6 @@ const MyTuneUtils = (() => {
         return card;
     };
 
-    /* ========================================
-       DATE FORMATTING
-    ======================================== */
-
     const formatDate = (date) => {
         const d = new Date(date);
         return d.toLocaleDateString();
@@ -221,10 +193,6 @@ const MyTuneUtils = (() => {
 
         return "Just now";
     };
-
-    /* ========================================
-       PUBLIC API
-    ======================================== */
 
     return {
         formatTime,

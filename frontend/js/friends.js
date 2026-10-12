@@ -1,8 +1,4 @@
-/* ==========================================
-   MYTUNE FRIEND CONNECTION SYSTEM
-========================================== */
-
-class MyTuneFriends {
+class BeatFlowFriends {
     constructor() {
         this.mainContent = document.getElementById("mainContent");
         this.state = {
@@ -13,10 +9,6 @@ class MyTuneFriends {
 
         this.init();
     }
-
-    /* ========================================
-       INITIALIZATION
-    ======================================== */
 
     init() {
         this.attachGlobalEvents();
@@ -32,10 +24,6 @@ class MyTuneFriends {
     showSuccess(message) {
         alert(message);
     }
-
-    /* ========================================
-       USER SEARCH
-    ======================================== */
 
     attachGlobalEvents() {
         document.addEventListener("input", (e) => {
@@ -90,10 +78,6 @@ class MyTuneFriends {
         });
     }
 
-    /* ========================================
-       SEND FRIEND REQUEST
-    ======================================== */
-
     async sendFriendRequest(userId) {
         const message = prompt("Optional message:");
 
@@ -113,10 +97,6 @@ class MyTuneFriends {
             this.showError(err.message);
         }
     }
-
-    /* ========================================
-       LOAD FRIEND REQUESTS
-    ======================================== */
 
     async loadFriendRequests() {
         try {
@@ -192,10 +172,6 @@ class MyTuneFriends {
         }
     }
 
-    /* ========================================
-       FRIENDS LIST
-    ======================================== */
-
     async loadFriends() {
         try {
             const res = await fetch("/api/friends");
@@ -264,10 +240,6 @@ class MyTuneFriends {
         });
     }
 
-    /* ========================================
-       SUGGESTIONS
-    ======================================== */
-
     async loadSuggestions() {
         try {
             const res = await fetch("/api/friends/suggestions");
@@ -306,10 +278,6 @@ class MyTuneFriends {
         });
     }
 
-    /* ========================================
-       UNFRIEND
-    ======================================== */
-
     async unfriend(friendId) {
         if (!confirm("Are you sure you want to unfriend?")) return;
 
@@ -329,10 +297,6 @@ class MyTuneFriends {
     }
 }
 
-/* ==========================================
-   INITIALIZE
-========================================== */
-
 document.addEventListener("DOMContentLoaded", () => {
-    window.myTuneFriends = new MyTuneFriends();
+    window.beatFlowFriends = new BeatFlowFriends();
 });

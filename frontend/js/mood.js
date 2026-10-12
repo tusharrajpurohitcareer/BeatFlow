@@ -1,7 +1,3 @@
-/* ==========================================
-   MOOD PLAYLIST FRONTEND
-========================================== */
-
 class MoodFeature {
 
   constructor() {

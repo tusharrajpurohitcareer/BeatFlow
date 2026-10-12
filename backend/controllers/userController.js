@@ -1,14 +1,5 @@
-/* ==========================================
-   MYTUNE USER CONTROLLER
-========================================== */
-
 const mongoose = require("mongoose");
 const { User, Playlist, Friendship, PlayHistory, ListeningSession, Song } = require("../models");
-
-/* ==========================================
-   1️⃣ GET CURRENT USER PROFILE
-   GET /api/users/me
-========================================== */
 
 exports.getProfile = async (req, res, next) => {
   try {
@@ -23,12 +14,6 @@ exports.getProfile = async (req, res, next) => {
     next(error);
   }
 };
-
-
-/* ==========================================
-   2️⃣ UPDATE PROFILE
-   PUT /api/users/me
-========================================== */
 
 exports.updateProfile = async (req, res, next) => {
   try {
@@ -66,12 +51,6 @@ exports.updateProfile = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   3️⃣ GET USER BY ID (PUBLIC PROFILE)
-   GET /api/users/:id
-========================================== */
-
 exports.getUserById = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -103,12 +82,6 @@ exports.getUserById = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   4️⃣ SEARCH USERS
-   GET /api/users/search?q=
-========================================== */
-
 exports.searchUsers = async (req, res, next) => {
   try {
     const query = req.query.q;
@@ -137,19 +110,12 @@ exports.searchUsers = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   5️⃣ DELETE ACCOUNT
-   DELETE /api/users/me
-========================================== */
-
 exports.deleteAccount = async (req, res, next) => {
   try {
     const { hardDelete } = req.query;
 
     if (hardDelete === "true") {
 
-      // Delete user data
       await Playlist.deleteMany({ owner: req.user._id });
       await Friendship.deleteMany({
         $or: [
@@ -169,9 +135,8 @@ exports.deleteAccount = async (req, res, next) => {
 
     } else {
 
-      // Soft delete (deactivate account)
       await User.findByIdAndUpdate(req.user._id, {
-        email: `deleted_${Date.now()}@mytune.com`,
+        email: `deleted_${Date.now()}@beatflow.com`,
         username: `deleted_${Date.now()}`,
         profile: {},
         emailVerified: false
@@ -188,12 +153,6 @@ exports.deleteAccount = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   6️⃣ GET LIKED SONGS
-   GET /api/users/me/liked
-========================================== */
-
 exports.getLikedSongs = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id).select("likedSongs");
@@ -202,12 +161,6 @@ exports.getLikedSongs = async (req, res, next) => {
     next(error);
   }
 };
-
-
-/* ==========================================
-   7️⃣ LIKE A SONG
-   POST /api/users/me/liked/:songId
-========================================== */
 
 exports.likeSong = async (req, res, next) => {
   try {
@@ -230,12 +183,6 @@ exports.likeSong = async (req, res, next) => {
   }
 };
 
-
-/* ==========================================
-   8️⃣ UNLIKE A SONG
-   DELETE /api/users/me/liked/:songId
-========================================== */
-
 exports.unlikeSong = async (req, res, next) => {
   try {
     const { songId } = req.params;
@@ -249,12 +196,6 @@ exports.unlikeSong = async (req, res, next) => {
     next(error);
   }
 };
-
-
-/* ==========================================
-   9️⃣ UPDATE LAST ACTIVE
-   (Internal use)
-========================================== */
 
 exports.updateLastActive = async (userId) => {
   try {

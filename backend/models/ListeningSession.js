@@ -66,17 +66,9 @@ const listeningSessionSchema = new mongoose.Schema({
   timestamps: { createdAt: true, updatedAt: false }
 });
 
-/* ==========================================
-   INDEXES
-========================================== */
-
 listeningSessionSchema.index({ host: 1 });
 listeningSessionSchema.index({ mode: 1 });
 listeningSessionSchema.index({ "participants.userId": 1 });
-
-/* ==========================================
-   METHODS
-========================================== */
 
 listeningSessionSchema.methods.addParticipant = function (userId) {
   if (!this.participants.find(p => p.userId.equals(userId))) {

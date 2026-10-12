@@ -15,14 +15,12 @@ const seedDatabase = async () => {
     await Playlist.deleteMany();
     await Friendship.deleteMany();
 
-    /* ================= USERS ================= */
-
     const users = [];
 
     for (let i = 1; i <= 10; i++) {
       const user = await User.create({
         username: `user${i}`,
-        email: `user${i}@mytune.com`,
+        email: `user${i}@beatflow.com`,
         password: "Password123",
         emailVerified: true
       });
@@ -30,8 +28,6 @@ const seedDatabase = async () => {
     }
 
     console.log("👤 Users created");
-
-    /* ================= SONGS ================= */
 
     const genres = ["Pop", "Rock", "Hip-Hop", "Jazz", "EDM"];
 
@@ -50,8 +46,6 @@ const seedDatabase = async () => {
 
     console.log("🎵 Songs created");
 
-    /* ================= PLAYLISTS ================= */
-
     for (let i = 1; i <= 20; i++) {
       await Playlist.create({
         name: `Playlist ${i}`,
@@ -65,8 +59,6 @@ const seedDatabase = async () => {
     }
 
     console.log("📀 Playlists created");
-
-    /* ================= FRIENDSHIPS ================= */
 
     for (let i = 0; i < users.length - 1; i++) {
       await Friendship.create({
