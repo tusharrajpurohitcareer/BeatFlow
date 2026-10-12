@@ -21,13 +21,7 @@ pipeline {
             }
         }
 
-        stage('Install Backend Dependencies') {
-            steps {
-                dir('backend') {
-                    bat 'npm ci'
-                }
-            }
-        }
+        
 
         stage('Run Backend Tests') {
             steps {
