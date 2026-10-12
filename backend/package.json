@@ -6,7 +6,7 @@
   "scripts": {
     "seed": "node scripts/seedDatabase.js",
     "dev": "nodemon server.js",
-    "test": "cross-env NODE_ENV=test jest --runInBand",
+   "test": "cross-env NODE_ENV=test JWT_SECRET=test-only-jwt-secret-for-ci jest --runInBand",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },
